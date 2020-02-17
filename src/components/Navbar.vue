@@ -6,36 +6,28 @@
         color="white"
       ></v-app-bar-nav-icon>
     </v-app-bar>
-    <!-- <v-navigation-drawer temporary v-model="drawer">
-      <v-card>
-        <v-list dense>
-          <v-list-item v-for="item in items" :key="item.name">
-            <v-list-group no-action prepend-icon="mdi-microscope">
-              <template v-slot:activator>
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.name }}</v-list-item-title>
-                </v-list-item-content>
-              </template>
-              <v-list-item
-                link
-                @click="hello"
-                v-for="inn in inner"
-                :key="inn.taeki"
-              >
-                <v-list-item-title>{{ inn.taeki }}</v-list-item-title>
-              </v-list-item>
-            </v-list-group>
+    <v-navigation-drawer style="height:auto" temporary v-model="drawer">
+      <v-list dense>
+        <v-list-group
+          no-action
+          :prepend-icon="section.icon"
+          v-for="section in sections"
+          :key="section.name"
+        >
+          <template v-slot:activator>
+            <v-list-item-title>{{ section.name }}</v-list-item-title>
+          </template>
+          <v-list-item
+            link
+            @click="hello"
+            v-for="kind in section.kinds"
+            :key="kind.name"
+          >
+            <v-list-item-title class="pl-4">{{ kind.name }}</v-list-item-title>
           </v-list-item>
-        </v-list>
-      </v-card>
-    </v-navigation-drawer> -->
-    <div v-for="section in sections" :key="section.name">
-      <v-icon>{{ section.icon }} </v-icon>
-      {{ section.name }}
-      <div v-for="kind in section.kinds" :key="kind.name">
-        {{ kind.name }}
-      </div>
-    </div>
+        </v-list-group>
+      </v-list>
+    </v-navigation-drawer>
   </v-content>
 </template>
 
@@ -64,7 +56,7 @@ export default {
         {
           icon: 'mdi-wallet-travel',
           name: 'Accessories',
-          kinds: [{ name: 'First Aid' }, { name: 'iridium phone' }]
+          kinds: [{ name: 'First Aid' }, { name: 'Iridium phone' }]
         }
       ]
     }
