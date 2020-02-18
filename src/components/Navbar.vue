@@ -1,12 +1,93 @@
 <template>
-  <v-content>
-    <v-app-bar color="indigo">
-      <v-app-bar-nav-icon
-        @click="drawer = !drawer"
-        color="white"
-      ></v-app-bar-nav-icon>
+  <nav>
+    <v-app-bar dense app color="indigo" dark>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>IES Database</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu open-on-hover offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn small text v-on="on">
+            <v-icon>mdi-microscope</v-icon>Instruments</v-btn
+          >
+        </template>
+        <v-list>
+          <v-list-item
+            dense
+            link
+            v-for="item in sections[0].kinds"
+            :key="item.name"
+            router
+            :to="item.route"
+          >
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <v-menu open-on-hover offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn small text v-on="on"> <v-icon>mdi-home</v-icon>Houses</v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            dense
+            link
+            v-for="item in sections[1].kinds"
+            :key="item.name"
+            router
+            :to="item.route"
+          >
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <v-menu open-on-hover offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn small text v-on="on">
+            <v-icon>mdi-jeepney</v-icon>Vehicles</v-btn
+          >
+        </template>
+        <v-list>
+          <v-list-item
+            dense
+            link
+            v-for="item in sections[2].kinds"
+            :key="item.name"
+            router
+            :to="item.route"
+          >
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <v-menu open-on-hover offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn small text v-on="on">
+            <v-icon>mdi-wallet-travel</v-icon>Other</v-btn
+          >
+        </template>
+        <v-list>
+          <v-list-item
+            dense
+            link
+            v-for="item in sections[3].kinds"
+            :key="item.name"
+            router
+            :to="item.route"
+          >
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <v-btn small text>All Years</v-btn>
+      <v-btn small text>2020</v-btn>
+      <v-btn small text>2021</v-btn>
+      <v-btn small text>select year</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn small text>To Bookings</v-btn>
+      <v-btn small text> <v-icon>mdi-exit-to-app</v-icon>Exit </v-btn>
     </v-app-bar>
-    <v-navigation-drawer style="height:auto" temporary v-model="drawer">
+
+    <v-navigation-drawer app v-model="drawer">
       <v-list dense>
         <v-list-group
           no-action
@@ -19,16 +100,17 @@
           </template>
           <v-list-item
             link
-            @click="hello"
             v-for="kind in section.kinds"
             :key="kind.name"
+            router
+            :to="kind.route"
           >
             <v-list-item-title class="pl-4">{{ kind.name }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-  </v-content>
+  </nav>
 </template>
 
 <script>
@@ -41,21 +123,32 @@ export default {
         {
           icon: 'mdi-microscope',
           name: 'Instruments',
-          kinds: [{ name: 'Microprobe' }, { name: 'FTIR' }, { name: 'SEM' }]
+          kinds: [
+            { name: 'Microprobe', route: '/test' },
+            { name: 'Table', route: '/table' },
+            { name: 'FTIR', route: 'ftir' },
+            { name: 'SEM', route: 'sem' }
+          ]
         },
         {
           icon: 'mdi-home',
           name: 'Houses',
-          kinds: [{ name: 'Dyngja' }, { name: 'Helluhraun' }]
+          kinds: [
+            { name: 'Dyngja', route: 'dyngja' },
+            { name: 'Helluhraun', route: 'helluhraun' }
+          ]
         },
         {
           icon: 'mdi-jeepney',
           name: 'Vehicles',
-          kinds: [{ name: 'Red Hilux' }, { name: 'Blue Hilux' }]
+          kinds: [
+            { name: 'Red Hilux', route: 'red_hilux' },
+            { name: 'Blue Hilux', route: 'blue_hilux' }
+          ]
         },
         {
           icon: 'mdi-wallet-travel',
-          name: 'Accessories',
+          name: 'Other',
           kinds: [{ name: 'First Aid' }, { name: 'Iridium phone' }]
         }
       ]
@@ -64,4 +157,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style></style>

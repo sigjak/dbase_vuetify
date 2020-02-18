@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Test from '@/components/Test.vue'
 import Navbar from '@/components/Navbar.vue'
+import Table from '@/components/Table.vue'
 
 Vue.use(VueRouter)
 
@@ -10,6 +11,11 @@ const routes = [
     path: '/navbar',
     name: 'navbar',
     component: Navbar
+  },
+  {
+    path: '/table',
+    name: 'table',
+    component: Table
   },
   {
     path: '/about',
@@ -21,7 +27,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/',
+    path: '/test',
     name: 'Test',
     component: Test
   }
