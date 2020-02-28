@@ -16,7 +16,6 @@
             link
             v-for="item in sections[0].kinds"
             :key="item.name"
-            router
             :to="item.route"
           >
             <v-list-item-title>{{ item.name }}</v-list-item-title>
@@ -78,9 +77,9 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn small text>All Years</v-btn>
+      <!-- <v-btn small text>All Years</v-btn>
       <v-btn small text>2020</v-btn>
-      <v-btn small text>2021</v-btn>
+      <v-btn small text>2021</v-btn> -->
       <v-btn small text>select year</v-btn>
       <v-spacer></v-spacer>
       <v-btn small text>To Bookings</v-btn>
@@ -124,10 +123,26 @@ export default {
           icon: 'mdi-microscope',
           name: 'Instruments',
           kinds: [
-            { name: 'Microprobe', route: '/test' },
-            { name: 'Table', route: '/table' },
-            { name: 'FTIR', route: 'ftir' },
-            { name: 'SEM', route: 'sem' }
+            {
+              name: 'Edit',
+              route: { name: 'edit', params: { table: 'probeuse' } }
+            },
+            {
+              name: 'Microprobe',
+              route: {
+                name: 'table',
+                params: { table: 'probeuse', unit: 'Microprobe' }
+              }
+            },
+            {
+              name: 'Thin Sections',
+              route: { name: 'thin', params: { table: 'thin_sections' } }
+            },
+
+            {
+              name: 'Crud',
+              route: { name: 'crud', params: { table: 'dark' } }
+            }
           ]
         },
         {
