@@ -25,6 +25,23 @@
                 label="Account"
               ></v-text-field>
             </v-col>
+            <v-col cols="12" sm="6">
+              <v-menu>
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    :value="formattedDate"
+                    label="Date"
+                    readonly
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  class="mt-12"
+                  no-title
+                  v-model="dagur"
+                ></v-date-picker>
+              </v-menu>
+            </v-col>
           </v-row>
         </v-card-text>
         <v-card-actions>
@@ -67,7 +84,7 @@
               <v-icon class="mr-2 pt-2" @click="editItem(item)">
                 mdi-pencil
               </v-icon>
-              <v-icon class="pt-2" @click="deleteItem(item)">
+              <v-icon class="pt-2" @click.stop="openDelete(item)">
                 mdi-trash-can
               </v-icon>
             </template>
@@ -75,6 +92,28 @@
         </v-card>
       </v-col>
     </v-row>
+    <!--                      DELETE DIALOG                 -->
+    <v-dialog v-model="deleteDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">Deleting!</v-card-title>
+
+        <v-card-text>
+          Are you sure? This can not be undone.
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="green darken-1" text @click="deleteDialog = false">
+            Close
+          </v-btn>
+
+          <v-btn color="warning" text @click="deleteItem(itemToDelete)">
+            Delete
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -84,14 +123,27 @@ export default {
   props: ['table', 'unit'],
   data() {
     return {
+      dagur: null,
+      deleteDialog: false,
+      itemToDelete: [],
       editedItem: {
         fullName: '',
         email: '',
+        id: '',
         account: '',
         date: '',
         supervisor: '',
         tablename: ''
       },
+      // defaultItem: {
+      //   fullName: '',
+      //   email: '',
+      //   id: '',
+      //   account: '',
+      //   date: '',
+      //   supervisor: '',
+      //   tablename: ''
+      // },
       editedIndex: -1,
       dialog: false,
       search: '',
@@ -139,35 +191,57 @@ export default {
       return items
     },
     save() {
-      //console.log(this.editedItem.id)
-      this.updateTable()
       if (this.editedIndex > -1) {
+        this.editedItem.date = this.formattedDate
         Object.assign(this.tableData[this.editedIndex], this.editedItem)
+
+        this.updateTable()
       }
     },
+    openDelete(item) {
+      this.itemToDelete = item
+      this.deleteDialog = true
+    },
     deleteItem(item) {
+      this.deleteDialog = false
       this.editedIndex = this.tableData.indexOf(item)
+      this.editedItem = Object.assign({}, item)
       this.tableData.splice(this.editedIndex, 1)
+      this.deleteFromTable()
+    },
+    deleteFromTable() {
+      this.editedItem.tablename = this.table
+      this.$http
+        .post('delete.php', this.editedItem)
+        .then(response => console.log(response.data))
     },
     editItem(item) {
-      console.log(item)
       this.editedIndex = this.tableData.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
+    },
+    updateTable() {
+      this.editedItem.tablename = this.table
+      console.log(this.editedItem)
+      // this.$http
+      //   .post('update.php', this.editedItem)
+      //   .then(response => console.log(response.data))
+      this.dagur = null
     },
     getData(tablename) {
       this.$http.get(`getTables.php?name=${tablename}`).then(resp => {
         this.tableData = resp.data
       })
     },
-    updateTable() {
-      // console.log(this.editedItem.id)
-      this.editedItem.tablename = this.table
-      this.$http
-        .post('update.php', this.editedItem)
-        .then(response => console.log(response.data))
-    },
+
     sel() {}
+  },
+  computed: {
+    formattedDate() {
+      return this.dagur
+        ? moment(this.dagur).format('DD-MM-YYYY')
+        : this.editedItem.date
+    }
   },
   created() {
     if (!this.table) {
