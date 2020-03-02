@@ -2,7 +2,7 @@
   <v-app>
     <Navbar />
     <v-content>
-      <Cast />
+      <!-- <Cast /> -->
       <router-view></router-view>
     </v-content>
   </v-app>

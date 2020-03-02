@@ -63,7 +63,7 @@
       <v-col>
         <v-card>
           <v-card-title class="text-uppercase text-center">{{
-            unit
+            currentUnit
           }}</v-card-title>
           <v-data-table
             v-model="selected"
@@ -73,7 +73,7 @@
             :custom-sort="customSort"
             item-key="id"
             calculate-widths
-            locale="es"
+            locale="is"
             show-select
             :search="search"
             class="elevation-1"
@@ -107,7 +107,8 @@
         <v-card-title class="headline">Deleting!</v-card-title>
 
         <v-card-text>
-          Are you sure? This can not be undone.
+          Are you sure? <br />
+          This can not be undone!!
         </v-card-text>
 
         <v-card-actions>
@@ -143,9 +144,11 @@ export default {
   props: ['table', 'unit'],
   data() {
     return {
+      currentTable: '',
+      currentUnit: '',
       excelData: [],
-      excelFilename: 'sig',
-      excelSheetname: 'sheet',
+      excelFilename: this.currentUnit + '_' + new Date().toLocaleDateString(),
+      excelSheetname: this.currentUnit,
       postdata: {
         ids: [],
         tablename: ''
@@ -174,11 +177,13 @@ export default {
         {
           text: 'Name',
           align: 'left',
-          value: 'fullName'
+          value: 'fullName',
+          width: 200
         },
-        { text: 'Email', value: 'email' },
-        { text: 'Account', value: 'account', width: '100' },
-        { text: 'Date', value: 'date', width: '40', sortable: true },
+        { text: 'Date', value: 'date', width: '150' },
+        { text: 'Email', value: 'email', width: '200' },
+        { text: 'Account', value: 'account' },
+
         { text: 'Supervisor', value: 'supervisor' },
         { text: 'Comments', value: 'comments', width: 150, sortable: false },
         { text: 'Actions', value: 'action', sortable: false }
@@ -214,8 +219,8 @@ export default {
       if (this.editedIndex > -1) {
         this.editedItem.date = this.formattedDate
         Object.assign(this.tableData[this.editedIndex], this.editedItem)
-
         this.updateTable()
+        this.dialog = false
       }
     },
     close() {
@@ -226,14 +231,21 @@ export default {
       this.itemToDelete = item
       this.indexes.push(this.tableData.indexOf(item))
       this.editedItem = Object.assign({}, item)
-      // this.tableData.splice(this.editedIndex, 1)
       this.postdata.ids.push(this.editedItem.id)
       this.deleteDialog = true
     },
-
+    deleteMany() {
+      this.selected.forEach(item => {
+        this.indexes.push(this.tableData.indexOf(item))
+        this.postdata.ids.push(item.id)
+      })
+      this.indexes.sort((a, b) => b - a)
+      this.selected = []
+      this.deleteDialog = true
+    },
     deleteFromTable() {
       this.deleteDialog = false
-      this.postdata.tablename = this.table
+      this.postdata.tablename = this.currentTable
 
       this.indexes.forEach(item => {
         this.tableData.splice(item, 1)
@@ -250,7 +262,7 @@ export default {
       this.dialog = true
     },
     updateTable() {
-      this.editedItem.tablename = this.table
+      this.editedItem.tablename = this.currentTable
       this.$http
         .post('update.php', this.editedItem)
         .then(response => console.log(response.data))
@@ -264,16 +276,6 @@ export default {
     downloadExcel() {
       this.$refs.downExcel.$el.click()
       this.selected = []
-    },
-
-    deleteMany() {
-      this.selected.forEach(item => {
-        this.indexes.push(this.tableData.indexOf(item))
-        this.postdata.ids.push(item.id)
-      })
-      this.indexes.sort((a, b) => b - a)
-      this.selected = []
-      this.deleteDialog = true
     }
   },
   computed: {
@@ -296,13 +298,22 @@ export default {
     }
   },
   created() {
-    if (!this.table) {
-      this.table = localStorage.getItem('table')
+    if (this.table) {
+      localStorage.setItem('storedTable', this.table)
+      localStorage.setItem('storedUnit', this.unit)
+      this.currentTable = this.table
+      this.currentUnit = this.unit
     } else {
-      localStorage.setItem('table', this.table)
+      this.currentTable = localStorage.getItem('storedTable')
+      this.currentUnit = localStorage.getItem('storedUnit')
     }
+    // if (!this.table) {
+    //   this.table = localStorage.getItem('table')
+    // } else {
+    //   localStorage.setItem('table', this.table)
+    // }
 
-    this.getData(this.table)
+    this.getData(this.currentTable)
   }
 }
 </script>
