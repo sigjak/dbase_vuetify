@@ -1,10 +1,8 @@
 <template>
   <v-container>
-    <v-btn @click="dialog = true">open</v-btn>
-
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
-        <v-card-title>Update</v-card-title>
+        <v-card-title class="headline">Update</v-card-title>
         <v-card-text>
           <v-row>
             <v-col cols="12" sm="6">
@@ -46,7 +44,7 @@
         </v-card-text>
         <v-card-actions>
           <v-btn @click="dialog = !dialog">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="save()">Save</v-btn>
+          <v-btn color="primary lighten-1" @click="save()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -64,9 +62,9 @@
     <v-row>
       <v-col>
         <v-card>
-          <v-btn @click="sel">sel</v-btn>
-
-          <v-card-title class="text-uppercase">{{ unit }}</v-card-title>
+          <v-card-title class="text-uppercase text-center">{{
+            unit
+          }}</v-card-title>
           <v-data-table
             v-model="selected"
             :headers="headers"
@@ -81,12 +79,21 @@
             class="elevation-1"
           >
             <template #item.action="{ item }">
-              <v-icon class="mr-2 pt-2" @click="editItem(item)">
+              <v-icon class="mr-2 pt-2" @click="updateItem(item)">
                 mdi-pencil
               </v-icon>
               <v-icon class="pt-2" @click.stop="openDelete(item)">
                 mdi-trash-can
               </v-icon>
+            </template>
+            <template v-if="selected.length > 0" #top>
+              <v-row>
+                <v-btn small class="primary" @click="downloadExcel()">
+                  Download selected</v-btn
+                >
+
+                <v-btn small class="error" @click="sel">Delete selected</v-btn>
+              </v-row>
             </template>
           </v-data-table>
         </v-card>
@@ -107,13 +114,23 @@
           <v-btn color="green darken-1" text @click="deleteDialog = false">
             Close
           </v-btn>
-
-          <v-btn color="warning" text @click="deleteItem(itemToDelete)">
+          <v-btn color="warning" text @click="deleteFromTable()">
             Delete
           </v-btn>
+          <!-- <v-btn color="warning" text @click="deleteItem(itemToDelete)">
+            Delete
+          </v-btn> -->
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <vue-excel-xlsx
+      :data="excelData"
+      :columns="excelColumns"
+      :filename="excelFilename"
+      :sheetname="excelSheetname"
+      ref="downExcel"
+    >
+    </vue-excel-xlsx>
   </v-container>
 </template>
 
@@ -123,6 +140,15 @@ export default {
   props: ['table', 'unit'],
   data() {
     return {
+      excelData: [],
+      excelFilename: 'sig',
+      excelSheetname: 'sheet',
+      postdata: {
+        ids: [],
+        tablename: ''
+      },
+      indexes: [],
+      invSortedIndex: [],
       dagur: null,
       deleteDialog: false,
       itemToDelete: [],
@@ -135,15 +161,6 @@ export default {
         supervisor: '',
         tablename: ''
       },
-      // defaultItem: {
-      //   fullName: '',
-      //   email: '',
-      //   id: '',
-      //   account: '',
-      //   date: '',
-      //   supervisor: '',
-      //   tablename: ''
-      // },
       editedIndex: -1,
       dialog: false,
       search: '',
@@ -198,34 +215,49 @@ export default {
         this.updateTable()
       }
     },
+    close() {
+      this.dialog = false
+      this.formattedDate = null
+    },
     openDelete(item) {
       this.itemToDelete = item
+      this.indexes.push(this.tableData.indexOf(item))
+      this.editedItem = Object.assign({}, item)
+      // this.tableData.splice(this.editedIndex, 1)
+      this.postdata.ids.push(this.editedItem.id)
       this.deleteDialog = true
     },
-    deleteItem(item) {
-      this.deleteDialog = false
-      this.editedIndex = this.tableData.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.tableData.splice(this.editedIndex, 1)
-      this.deleteFromTable()
-    },
+    // deleteItem(item) {
+    //   this.deleteDialog = false
+    //   // this.editedIndex = this.tableData.indexOf(item)
+    //   // this.editedItem = Object.assign({}, item)
+    //   // this.tableData.splice(this.editedIndex, 1)
+    //   // this.postdata.ids.push(this.editedItem.id)
+    //   this.deleteFromTable()
+    // },
     deleteFromTable() {
-      this.editedItem.tablename = this.table
-      this.$http
-        .post('delete.php', this.editedItem)
-        .then(response => console.log(response.data))
+      this.deleteDialog = false
+      this.postdata.tablename = this.table
+
+      this.indexes.forEach(item => {
+        this.tableData.splice(item, 1)
+      })
+      this.indexes = []
+      this.$http.post('delete.php', this.postdata).then(response => {
+        console.log(response.data)
+        this.postdata.ids = []
+      })
     },
-    editItem(item) {
+    updateItem(item) {
       this.editedIndex = this.tableData.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
     updateTable() {
       this.editedItem.tablename = this.table
-      console.log(this.editedItem)
-      // this.$http
-      //   .post('update.php', this.editedItem)
-      //   .then(response => console.log(response.data))
+      this.$http
+        .post('update.php', this.editedItem)
+        .then(response => console.log(response.data))
       this.dagur = null
     },
     getData(tablename) {
@@ -233,10 +265,29 @@ export default {
         this.tableData = resp.data
       })
     },
+    downloadExcel() {
+      this.excelData = [{ fullName: 'Sigjak', email: 'sigjak@hi.is' }]
+      this.$refs.downExcel.$el.click()
+    },
 
-    sel() {}
+    sel() {
+      this.selected.forEach(item => {
+        this.indexes.push(this.tableData.indexOf(item))
+        this.postdata.ids.push(item.id)
+      })
+      this.indexes.sort((a, b) => b - a)
+      this.selected = []
+      this.deleteDialog = true
+    }
   },
   computed: {
+    excelColumns() {
+      let sd = [
+        { label: 'Name', field: 'fullName' },
+        { label: 'Email', field: 'email' }
+      ]
+      return sd
+    },
     formattedDate() {
       return this.dagur
         ? moment(this.dagur).format('DD-MM-YYYY')
