@@ -88,11 +88,13 @@
             </template>
             <template v-if="selected.length > 0" #top>
               <v-row>
-                <v-btn small class="primary" @click="downloadExcel()">
+                <v-btn small class="primary ml-8 mr-4" @click="downloadExcel()">
                   Download selected</v-btn
                 >
 
-                <v-btn small class="error" @click="sel">Delete selected</v-btn>
+                <v-btn small class="error" @click="deleteMany()"
+                  >Delete selected</v-btn
+                >
               </v-row>
             </template>
           </v-data-table>
@@ -123,8 +125,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <!--                      Download excel                -->
     <vue-excel-xlsx
-      :data="excelData"
+      :data="selected"
       :columns="excelColumns"
       :filename="excelFilename"
       :sheetname="excelSheetname"
@@ -259,11 +262,11 @@ export default {
       })
     },
     downloadExcel() {
-      this.excelData = [{ fullName: 'Sigjak', email: 'sigjak@hi.is' }]
       this.$refs.downExcel.$el.click()
+      this.selected = []
     },
 
-    sel() {
+    deleteMany() {
       this.selected.forEach(item => {
         this.indexes.push(this.tableData.indexOf(item))
         this.postdata.ids.push(item.id)
@@ -275,11 +278,16 @@ export default {
   },
   computed: {
     excelColumns() {
-      let sd = [
+      let columns = [
         { label: 'Name', field: 'fullName' },
-        { label: 'Email', field: 'email' }
+        { label: 'Date', field: 'date' },
+        { label: 'Status', field: 'status' },
+        { label: 'Email', field: 'email' },
+        { label: 'Account', field: 'account' },
+        { label: 'Supervisor', field: 'supervisor' },
+        { label: 'Comments', field: 'comments' }
       ]
-      return sd
+      return columns
     },
     formattedDate() {
       return this.dagur
