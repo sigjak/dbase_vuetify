@@ -227,14 +227,7 @@ export default {
       this.postdata.ids.push(this.editedItem.id)
       this.deleteDialog = true
     },
-    // deleteItem(item) {
-    //   this.deleteDialog = false
-    //   // this.editedIndex = this.tableData.indexOf(item)
-    //   // this.editedItem = Object.assign({}, item)
-    //   // this.tableData.splice(this.editedIndex, 1)
-    //   // this.postdata.ids.push(this.editedItem.id)
-    //   this.deleteFromTable()
-    // },
+
     deleteFromTable() {
       this.deleteDialog = false
       this.postdata.tablename = this.table
