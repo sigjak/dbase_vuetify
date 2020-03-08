@@ -77,10 +77,17 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <!-- <v-btn small text>All Years</v-btn>
-      <v-btn small text>2020</v-btn>
-      <v-btn small text>2021</v-btn> -->
-      <v-btn small text>select year</v-btn>
+
+      <v-menu open-on-hover offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" small text>select year</v-btn>
+        </template>
+        <v-list>
+          <v-list-item dense link>
+            <v-list-item-title>ALL YEARS</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-spacer></v-spacer>
       <v-btn small text>To Bookings</v-btn>
       <v-btn small text> <v-icon>mdi-exit-to-app</v-icon>Exit </v-btn>

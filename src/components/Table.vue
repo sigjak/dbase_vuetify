@@ -120,9 +120,6 @@
           <v-btn color="warning" text @click="deleteFromTable()">
             Delete
           </v-btn>
-          <!-- <v-btn color="warning" text @click="deleteItem(itemToDelete)">
-            Delete
-          </v-btn> -->
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -144,6 +141,7 @@ export default {
   props: ['table', 'unit'],
   data() {
     return {
+      yearsToGet: 'lastTwo',
       currentTable: '',
       currentUnit: '',
       excelData: [],
@@ -268,10 +266,12 @@ export default {
         .then(response => console.log(response.data))
       this.dagur = null
     },
-    getData(tablename) {
-      this.$http.get(`getTables.php?name=${tablename}`).then(resp => {
-        this.tableData = resp.data
-      })
+    getData(tablename, years) {
+      this.$http
+        .get(`getTables.php?name=${tablename} & years=${years}`)
+        .then(resp => {
+          this.tableData = resp.data
+        })
     },
     downloadExcel() {
       this.$refs.downExcel.$el.click()
@@ -307,13 +307,8 @@ export default {
       this.currentTable = localStorage.getItem('storedTable')
       this.currentUnit = localStorage.getItem('storedUnit')
     }
-    // if (!this.table) {
-    //   this.table = localStorage.getItem('table')
-    // } else {
-    //   localStorage.setItem('table', this.table)
-    // }
 
-    this.getData(this.currentTable)
+    this.getData(this.currentTable, this.yearsToGet)
   }
 }
 </script>

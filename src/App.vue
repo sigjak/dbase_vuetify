@@ -23,7 +23,7 @@ export default {
   }),
   methods: {
     go() {
-      this.$router.push({ name: 'About' })
+      console.log('hi')
     }
   }
 }
