@@ -82,7 +82,7 @@
               <v-icon class="mr-2 pt-2" @click="updateItem(item)">
                 mdi-pencil
               </v-icon>
-              <v-icon class="pt-2" @click.stop="openDelete(item)">
+              <v-icon class="pt-2" @click.stop="showAlert(item)">
                 mdi-trash-can
               </v-icon>
             </template>
@@ -92,7 +92,7 @@
                   Download selected</v-btn
                 >
 
-                <v-btn small class="error" @click="deleteMany()"
+                <v-btn small class="error" @click="showAlert()"
                   >Delete selected</v-btn
                 >
               </v-row>
@@ -101,28 +101,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <!--                      DELETE DIALOG                 -->
-    <v-dialog v-model="deleteDialog" max-width="290">
-      <v-card>
-        <v-card-title class="headline">Deleting!</v-card-title>
 
-        <v-card-text>
-          Are you sure? <br />
-          This can not be undone!!
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn color="green darken-1" text @click="deleteDialog = false">
-            Close
-          </v-btn>
-          <v-btn color="warning" text @click="deleteFromTable()">
-            Delete
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <!--                      Download excel                -->
     <vue-excel-xlsx
       :data="selected"
@@ -136,6 +115,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import moment from 'moment'
 export default {
   props: ['table', 'unit'],
@@ -151,11 +131,7 @@ export default {
         ids: [],
         tablename: ''
       },
-      indexes: [],
-      invSortedIndex: [],
       dagur: null,
-      deleteDialog: false,
-      itemToDelete: [],
       editedItem: {
         fullName: '',
         email: '',
@@ -170,7 +146,6 @@ export default {
       search: '',
       singleSelect: false,
       selected: [],
-      tableData: [],
       headers: [
         {
           text: 'Name',
@@ -189,6 +164,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['fetchData', 'updateTable', 'deleteItems']),
     customSort: function(items, index, isDesc) {
       items.sort((a, b) => {
         if (index[0] == 'date') {
@@ -216,8 +192,8 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         this.editedItem.date = this.formattedDate
-        Object.assign(this.tableData[this.editedIndex], this.editedItem)
-        this.updateTable()
+        this.editedItem.tablename = this.currentTable
+        this.updateTable(this.editedItem).then((this.dagur = null))
         this.dialog = false
       }
     },
@@ -225,60 +201,45 @@ export default {
       this.dialog = false
       this.formattedDate = null
     },
-    openDelete(item) {
-      this.itemToDelete = item
-      this.indexes.push(this.tableData.indexOf(item))
-      this.editedItem = Object.assign({}, item)
-      this.postdata.ids.push(this.editedItem.id)
-      this.deleteDialog = true
-    },
-    deleteMany() {
-      this.selected.forEach(item => {
-        this.indexes.push(this.tableData.indexOf(item))
-        this.postdata.ids.push(item.id)
-      })
-      this.indexes.sort((a, b) => b - a)
-      this.selected = []
-      this.deleteDialog = true
-    },
-    deleteFromTable() {
-      this.deleteDialog = false
-      this.postdata.tablename = this.currentTable
-
-      this.indexes.forEach(item => {
-        this.tableData.splice(item, 1)
-      })
-      this.indexes = []
-      this.$http.post('delete.php', this.postdata).then(response => {
-        console.log(response.data)
-        this.postdata.ids = []
-      })
-    },
     updateItem(item) {
       this.editedIndex = this.tableData.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
-    updateTable() {
-      this.editedItem.tablename = this.currentTable
-      this.$http
-        .post('update.php', this.editedItem)
-        .then(response => console.log(response.data))
-      this.dagur = null
-    },
-    getData(tablename, years) {
-      this.$http
-        .get(`getTables.php?name=${tablename} & years=${years}`)
-        .then(resp => {
-          this.tableData = resp.data
-        })
-    },
     downloadExcel() {
       this.$refs.downExcel.$el.click()
       this.selected = []
+    },
+    showAlert(item) {
+      this.$swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonColor: '#3085d6',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(result => {
+        if (result.value) {
+          if (item) this.postdata.ids.push(item.id)
+          this.selected.forEach(item => {
+            this.postdata.ids.push(item.id)
+          })
+          this.postdata.tablename = this.currentTable
+          console.log(this.postdata)
+          // call vuex then zero postdata and selected
+          this.deleteItems(this.postdata).then(() => {
+            this.selected = []
+            this.postdata.ids = []
+            this.postdata.tablename = ''
+            this.$swal('Deleted!', 'Item(s) deleted.', 'success')
+          })
+        }
+      })
     }
   },
   computed: {
+    ...mapGetters(['tableData']),
     excelColumns() {
       let columns = [
         { label: 'Name', field: 'fullName' },
@@ -307,8 +268,10 @@ export default {
       this.currentTable = localStorage.getItem('storedTable')
       this.currentUnit = localStorage.getItem('storedUnit')
     }
-
-    this.getData(this.currentTable, this.yearsToGet)
+    console.log('hi')
+    let payload = { tablename: this.currentTable, years: this.yearsToGet }
+    // this.getData(this.currentTable, this.yearsToGet)
+    this.fetchData(payload)
   }
 }
 </script>
