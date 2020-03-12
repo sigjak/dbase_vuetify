@@ -10,24 +10,26 @@ const base = axios.create({
 
 export default new Vuex.Store({
   state: {
-    data: []
-  },
-  getters: {
-    tableData: state => {
-      return state.data
+    params: {
+      data: [],
+      currentUnit: '',
+      year: '',
+      currentTable: ''
     }
   },
   actions: {
+    async fetchData({ commit }, payload) {
+      const response = await base.get(
+        `getTables.php?name=${payload.currentTable}&years=${payload.years}`
+      )
+      payload.data = response.data
+      commit('SET_DATA', payload)
+    },
     async deleteItems({ commit }, payload) {
       await base.post('delete.php', payload)
       commit('DELETE_ITEMS', payload.ids)
     },
-    async fetchData({ commit }, payload) {
-      const response = await base.get(
-        `getTables.php?name=${payload.tablename}&years=${payload.years}`
-      )
-      commit('SET_DATA', response.data)
-    },
+
     async updateTable({ commit }, payload) {
       await base.post('update.php', payload)
       commit('UPDATE_TABLE', payload)
@@ -35,12 +37,14 @@ export default new Vuex.Store({
   },
   mutations: {
     DELETE_ITEMS: (state, incoming) =>
-      (state.data = state.data.filter(item => {
+      (state.params.data = state.params.data.filter(item => {
         return !incoming.includes(item.id)
       })),
-    SET_DATA: (state, incoming) => (state.data = incoming),
+    SET_DATA: (state, incoming) => {
+      state.params = incoming
+    },
     UPDATE_TABLE: (state, incoming) => {
-      state.data.forEach(item => {
+      state.params.data.forEach(item => {
         if (item.id == incoming.id) {
           Object.assign(item, incoming)
         }

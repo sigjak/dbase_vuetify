@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <v-btn @click="changePage()">Page</v-btn>
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
         <v-card-title class="headline">Update</v-card-title>
@@ -62,22 +63,27 @@
     <v-row>
       <v-col>
         <v-card>
-          <v-card-title class="text-uppercase text-center">{{
-            currentUnit
-          }}</v-card-title>
+          <v-card-title class="text-uppercase text-center"
+            >{{ params.currentUnit }} {{ params.startingPage }}</v-card-title
+          >
           <v-data-table
             v-model="selected"
             :headers="headers"
-            :items="tableData"
+            :items="params.data"
             :single-select="singleSelect"
             :custom-sort="customSort"
             item-key="id"
             calculate-widths
-            locale="is"
             show-select
+            :options.sync="options"
             :search="search"
             class="elevation-1"
           >
+            <template #item.comments="{ item }">
+              <div class="overfl">
+                {{ item.comments }}
+              </div>
+            </template>
             <template #item.action="{ item }">
               <v-icon class="mr-2 pt-2" @click="updateItem(item)">
                 mdi-pencil
@@ -86,6 +92,7 @@
                 mdi-trash-can
               </v-icon>
             </template>
+
             <template v-if="selected.length > 0" #top>
               <v-row>
                 <v-btn small class="primary ml-8 mr-4" @click="downloadExcel()">
@@ -105,9 +112,9 @@
     <!--                      Download excel                -->
     <vue-excel-xlsx
       :data="selected"
-      :columns="excelColumns"
-      :filename="excelFilename"
-      :sheetname="excelSheetname"
+      :columns="excel.Columns"
+      :filename="excel.Filename"
+      :sheetname="excel.Sheetname"
       ref="downExcel"
     >
     </vue-excel-xlsx>
@@ -115,21 +122,21 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import moment from 'moment'
+import { mapActions } from 'vuex'
+import moment from 'moment/moment'
 export default {
-  props: ['table', 'unit'],
   data() {
     return {
+      options: {},
+
       yearsToGet: 'lastTwo',
-      currentTable: '',
-      currentUnit: '',
+
       excelData: [],
-      excelFilename: this.currentUnit + '_' + new Date().toLocaleDateString(),
-      excelSheetname: this.currentUnit,
+
       postdata: {
         ids: [],
-        tablename: ''
+        tablename: '',
+        data: []
       },
       dagur: null,
       editedItem: {
@@ -158,7 +165,12 @@ export default {
         { text: 'Account', value: 'account' },
 
         { text: 'Supervisor', value: 'supervisor' },
-        { text: 'Comments', value: 'comments', width: 150, sortable: false },
+        {
+          text: 'Comments',
+          value: 'comments',
+          width: 150,
+          sortable: false
+        },
         { text: 'Actions', value: 'action', sortable: false }
       ]
     }
@@ -189,10 +201,11 @@ export default {
       })
       return items
     },
+
     save() {
       if (this.editedIndex > -1) {
         this.editedItem.date = this.formattedDate
-        this.editedItem.tablename = this.currentTable
+        this.editedItem.tablename = this.params.currentTable
         this.updateTable(this.editedItem).then((this.dagur = null))
         this.dialog = false
       }
@@ -201,8 +214,9 @@ export default {
       this.dialog = false
       this.formattedDate = null
     },
+
     updateItem(item) {
-      this.editedIndex = this.tableData.indexOf(item)
+      this.editedIndex = this.params.data.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
@@ -225,8 +239,8 @@ export default {
           this.selected.forEach(item => {
             this.postdata.ids.push(item.id)
           })
-          this.postdata.tablename = this.currentTable
-          console.log(this.postdata)
+          this.postdata.tablename = this.params.currentTable
+
           // call vuex then zero postdata and selected
           this.deleteItems(this.postdata).then(() => {
             this.selected = []
@@ -239,18 +253,24 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['tableData']),
-    excelColumns() {
-      let columns = [
-        { label: 'Name', field: 'fullName' },
-        { label: 'Date', field: 'date' },
-        { label: 'Status', field: 'status' },
-        { label: 'Email', field: 'email' },
-        { label: 'Account', field: 'account' },
-        { label: 'Supervisor', field: 'supervisor' },
-        { label: 'Comments', field: 'comments' }
-      ]
-      return columns
+    params() {
+      return this.$store.state.params
+    },
+    excel() {
+      return {
+        Sheetname: this.params.currentUnit,
+        Filename:
+          this.params.currentUnit + '_' + new Date().toLocaleDateString(),
+        Columns: [
+          { label: 'Name', field: 'fullName' },
+          { label: 'Date', field: 'date' },
+          { label: 'Status', field: 'status' },
+          { label: 'Email', field: 'email' },
+          { label: 'Account', field: 'account' },
+          { label: 'Supervisor', field: 'supervisor' },
+          { label: 'Comments', field: 'comments' }
+        ]
+      }
     },
     formattedDate() {
       return this.dagur
@@ -258,31 +278,44 @@ export default {
         : this.editedItem.date
     }
   },
-  created() {
-    if (this.table) {
-      localStorage.setItem('storedTable', this.table)
-      localStorage.setItem('storedUnit', this.unit)
-      this.currentTable = this.table
-      this.currentUnit = this.unit
-    } else {
-      this.currentTable = localStorage.getItem('storedTable')
-      this.currentUnit = localStorage.getItem('storedUnit')
+  watch: {
+    params() {
+      this.options = { page: 1, itemsPerPage: 10 }
     }
-    console.log('hi')
-    let payload = { tablename: this.currentTable, years: this.yearsToGet }
-    // this.getData(this.currentTable, this.yearsToGet)
-    this.fetchData(payload)
+  },
+
+  created() {
+    // console.log('CREATEDD')
+    // if (this.table) {
+    //   localStorage.setItem('storedTable', this.table)
+    //   localStorage.setItem('storedUnit', this.unit)
+    //   this.currentTable = this.table
+    //   this.currentUnit = this.unit
+    // } else {
+    //   this.currentTable = localStorage.getItem('storedTable')
+    //   this.currentUnit = localStorage.getItem('storedUnit')
+    // }
+    // console.log('hi')
+    // let payload = { tablename: this.currentTable, years: this.yearsToGet }
+    // // this.getData(this.currentTable, this.yearsToGet)
+    // this.fetchData(payload)
   }
 }
 </script>
 >
 
 <style scoped>
-::v-deep .v-data-table tr td:nth-last-child(2) {
-  display: inline-block;
+.overfl {
+  overflow-y: auto;
   font-size: 0.6rem;
-  overflow: auto;
+  max-height: 48px;
 }
+/* ::v-deep .v-data-table tr td:nth-last-child(2) {
+  display: block;
+
+  font-size: 0.6rem;
+  overflow-y: auto;
+} */
 /* ::v-deep.v-data-table tr th:nth-child(4) {
   display: none;
 }

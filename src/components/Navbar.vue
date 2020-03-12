@@ -15,14 +15,15 @@
             dense
             link
             v-for="item in sections[0].kinds"
-            :key="item.name"
-            :to="item.route"
+            :key="item.unit"
           >
-            <v-list-item-title>{{ item.name }}</v-list-item-title>
+            <v-list-item-title @click="fetchData(item.params)">{{
+              item.unit
+            }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-menu open-on-hover offset-y>
+      <!-- <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
           <v-btn small text v-on="on"> <v-icon>mdi-home</v-icon>Houses</v-btn>
         </template>
@@ -87,7 +88,7 @@
             <v-list-item-title>ALL YEARS</v-list-item-title>
           </v-list-item>
         </v-list>
-      </v-menu>
+      </v-menu> -->
       <v-spacer></v-spacer>
       <v-btn small text>To Bookings</v-btn>
       <v-btn small text> <v-icon>mdi-exit-to-app</v-icon>Exit </v-btn>
@@ -120,6 +121,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -131,25 +133,33 @@ export default {
           name: 'Instruments',
           kinds: [
             {
-              name: 'Edit',
-              route: { name: 'edit', params: { table: 'probeuse' } }
-            },
-            {
-              name: 'Microprobe',
-              route: {
-                name: 'table',
-                params: { table: 'probeuse', unit: 'Microprobe' }
+              unit: 'Microprobe',
+              params: {
+                currentTable: 'probeuse',
+                years: 'lastTwo',
+                currentUnit: 'Microprobe'
               }
             },
             {
-              name: 'Thin Sections',
-              route: { name: 'thin', params: { table: 'thin_sections' } }
+              unit: 'FTIR',
+              params: {
+                currentTable: 'ftir',
+                years: 'lastTwo',
+                currentUnit: 'FTIR'
+              }
             },
-
             {
-              name: 'Crud',
-              route: { name: 'crud', params: { table: 'dark' } }
+              unit: 'SEM',
+              params: {
+                currentTable: 'sem',
+                years: 'lastTwo',
+                currentUnit: 'SEM'
+              }
             }
+            // {
+            //   name: 'Thin Sections',
+            //   route: { name: 'thin', params: { table: 'thin_sections' } }
+            // }
           ]
         },
         {
@@ -175,6 +185,9 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    ...mapActions(['fetchData'])
   }
 }
 </script>

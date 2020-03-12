@@ -3,7 +3,7 @@
     <Navbar />
 
     <v-content>
-      <!-- <Cast /> -->
+      <Table />
       <router-view></router-view>
     </v-content>
   </v-app>
@@ -11,23 +11,13 @@
 
 <script>
 import Navbar from '@/components/Navbar'
-//import Cast from './components/Cast'
+import Table from './components/Table'
 
 export default {
   name: 'App',
   components: {
-    Navbar
-    // Navbar
-    // Cast
-  },
-
-  data: () => ({
-    //
-  }),
-  methods: {
-    go() {
-      console.log('hi')
-    }
+    Navbar,
+    Table
   }
 }
 </script>
