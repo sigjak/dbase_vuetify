@@ -150,11 +150,16 @@ export default {
                 currentUnit: 'SEM',
                 title: 'Last Two Years'
               }
+            },
+            {
+              unit: 'Thin Sections',
+              params: {
+                currentTable: 'thin_sections',
+                years: 'lastTwo',
+                currentUnit: 'Thin Sections',
+                title: 'Last Two Years'
+              }
             }
-            // {
-            //   name: 'Thin Sections',
-            //   route: { name: 'thin', params: { table: 'thin_sections' } }
-            // }
           ]
         },
         {

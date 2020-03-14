@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid px-12>
     <v-btn @click="changePage()">Page</v-btn>
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
@@ -150,6 +150,30 @@ export default {
       search: '',
       singleSelect: false,
       selected: [],
+      headers: [],
+      thinHeaders: [
+        {
+          text: 'Name',
+          align: 'left',
+          value: 'fullName',
+          width: 180
+        },
+        { text: 'Date', value: 'date', width: '120' },
+        { text: 'Email', value: 'email' },
+        { text: 'Account', value: 'account', width: '100' },
+
+        { text: 'Supervisor', value: 'supervisor' },
+        { text: '27mm slide', value: 'slide27' },
+        { text: '27mm coated', value: 'slide27coated' },
+        { text: '1" round', value: 'oneround' },
+        { text: '1" polished', value: 'onepolished' },
+        { text: '1" mount', value: 'mountcoated' },
+        { text: '1" seven', value: 'oneseven' },
+        { text: 'carbon coated', value: 'carbon' },
+        { text: 'repolish', value: 'repolish' },
+        { text: 'Comments', value: 'comments', width: 150, sortable: false },
+        { text: 'Actions', value: 'action', sortable: false }
+      ],
       semHeaders: [
         {
           text: 'Name',
@@ -280,20 +304,53 @@ export default {
     ...mapState(['tableData', 'params']),
 
     excel() {
-      return {
-        Sheetname: this.params.currentUnit,
-        Filename:
-          this.params.currentUnit + '_' + new Date().toLocaleDateString(),
-        Columns: [
-          { label: 'Name', field: 'fullName' },
-          { label: 'Date', field: 'date' },
-          { label: 'Status', field: 'status' },
-          { label: 'Email', field: 'email' },
-          { label: 'Account', field: 'account' },
-          { label: 'Supervisor', field: 'supervisor' },
-          { label: 'Comments', field: 'comments' }
-        ]
+      const Sheetname = this.params.currentUnit
+      const Filename =
+        this.params.currentUnit + '_' + new Date().toLocaleDateString()
+      let Columns = []
+      let base = [
+        { label: 'Name', field: 'fullName' },
+        { label: 'Date', field: 'date' },
+        { label: 'Status', field: 'status' },
+        { label: 'Email', field: 'email' },
+        { label: 'Account', field: 'account' },
+        { label: 'Supervisor', field: 'supervisor' },
+        { label: 'Comments', field: 'comments' }
+      ]
+      const thin = [
+        { label: 'Slide 27', field: 'slide27' },
+        { label: 'Slide 27 Coat', field: 'slide27coated' },
+        { label: '1" round', field: 'oneround' },
+        { label: '1" polished', field: 'onepolished' },
+        { label: '1" seven ', field: 'mountcoated' },
+        { label: 'Mount Coated', field: 'oneseven' },
+        { label: 'C Coated', field: 'carbon' },
+        { label: 'Repolished ', field: 'repolish' }
+      ]
+      if (this.params.currentTable == 'thin_sections') {
+        Columns = base.concat(thin)
+      } else {
+        Columns = base
       }
+      return {
+        Sheetname,
+        Filename,
+        Columns
+      }
+      // return {
+      //   Sheetname: this.params.currentUnit,
+      //   Filename:
+      //     this.params.currentUnit + '_' + new Date().toLocaleDateString(),
+      //   Columns: [
+      //     { label: 'Name', field: 'fullName' },
+      //     { label: 'Date', field: 'date' },
+      //     { label: 'Status', field: 'status' },
+      //     { label: 'Email', field: 'email' },
+      //     { label: 'Account', field: 'account' },
+      //     { label: 'Supervisor', field: 'supervisor' },
+      //     { label: 'Comments', field: 'comments' }
+      //   ]
+      // }
     },
     formattedDate() {
       return this.dagur
@@ -310,6 +367,8 @@ export default {
         this.params.currentTable == 'ftir'
       ) {
         this.headers = this.semHeaders
+      } else if (this.params.currentTable == 'thin_sections') {
+        this.headers = this.thinHeaders
       } else {
         this.headers = this.baseHeaders
       }
