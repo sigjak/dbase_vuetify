@@ -22,24 +22,23 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <!-- <v-menu open-on-hover offset-y>
+      <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
           <v-btn small text v-on="on"> <v-icon>mdi-home</v-icon>Houses</v-btn>
         </template>
         <v-list>
           <v-list-item
             dense
+            @click="fetchData(item.params)"
             link
             v-for="item in sections[1].kinds"
-            :key="item.name"
-            router
-            :to="item.route"
+            :key="item.unit"
           >
-            <v-list-item-title>{{ item.name }}</v-list-item-title>
+            <v-list-item-title>{{ item.unit }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-menu open-on-hover offset-y>
+      <!-- <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
           <v-btn small text v-on="on">
             <v-icon>mdi-jeepney</v-icon>Vehicles</v-btn
@@ -130,7 +129,8 @@ export default {
                 currentTable: 'probeuse',
                 years: 'lastTwo',
                 currentUnit: 'Microprobe',
-                title: 'Last Two Years'
+                title: 'Last Two Years',
+                index: 'instr'
               }
             },
             {
@@ -139,7 +139,8 @@ export default {
                 currentTable: 'ftir',
                 years: 'lastTwo',
                 currentUnit: 'FTIR',
-                title: 'Last Two Years'
+                title: 'Last Two Years',
+                index: 'am-instr'
               }
             },
             {
@@ -148,7 +149,8 @@ export default {
                 currentTable: 'sem',
                 years: 'lastTwo',
                 currentUnit: 'SEM',
-                title: 'Last Two Years'
+                title: 'Last Two Years',
+                index: 'am-instr'
               }
             },
             {
@@ -157,7 +159,8 @@ export default {
                 currentTable: 'thin_sections',
                 years: 'lastTwo',
                 currentUnit: 'Thin Sections',
-                title: 'Last Two Years'
+                title: 'Last Two Years',
+                index: 'thin'
               }
             }
           ]
@@ -166,8 +169,36 @@ export default {
           icon: 'mdi-home',
           name: 'Houses',
           kinds: [
-            { name: 'Dyngja', route: 'dyngja' },
-            { name: 'Helluhraun', route: 'helluhraun' }
+            {
+              unit: 'Helluhraun',
+              params: {
+                currentTable: 'helluhraun',
+                years: 'lastTwo',
+                currentUnit: 'Helluhraun',
+                title: 'Last Two Years',
+                index: 'house'
+              }
+            },
+            {
+              unit: 'Dyngja',
+              params: {
+                currentTable: 'dyngja',
+                years: 'lastTwo',
+                currentUnit: 'Dyngja',
+                title: 'Last Two Years',
+                index: 'house'
+              }
+            },
+            {
+              unit: 'Vidimelur',
+              params: {
+                currentTable: 'vidimelur',
+                years: 'lastTwo',
+                currentUnit: 'Vidimelur',
+                title: 'Last Two Years',
+                index: 'house'
+              }
+            }
           ]
         },
         {

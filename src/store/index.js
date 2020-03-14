@@ -14,7 +14,8 @@ export default new Vuex.Store({
     params: {
       currentUnit: '',
       years: '',
-      currentTable: ''
+      currentTable: '',
+      index: ''
     }
   },
   actions: {
@@ -46,6 +47,7 @@ export default new Vuex.Store({
       state.params.title = incoming.title
       state.params.currentTable = incoming.currentTable
       state.params.years = incoming.years
+      state.params.index = incoming.index
       state.tableData = incoming.data
     },
     UPDATE_TABLE: (state, incoming) => {

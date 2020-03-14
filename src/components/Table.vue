@@ -174,31 +174,7 @@ export default {
         { text: 'Comments', value: 'comments', width: 150, sortable: false },
         { text: 'Actions', value: 'action', sortable: false }
       ],
-      semHeaders: [
-        {
-          text: 'Name',
-          align: 'left',
-          value: 'fullName',
-          width: 180
-        },
-        { text: 'Date', value: 'date', width: '120' },
-        {
-          text: 'AM/PM',
-          value: 'status',
-          width: '100'
-        },
-        { text: 'Email', value: 'email' },
-        { text: 'Account', value: 'account', width: '100' },
 
-        { text: 'Supervisor', value: 'supervisor' },
-        {
-          text: 'Comments',
-          value: 'comments',
-          width: 180,
-          sortable: false
-        },
-        { text: 'Actions', value: 'action', sortable: false }
-      ],
       baseHeaders: [
         {
           text: 'Name',
@@ -362,13 +338,17 @@ export default {
     tableData() {
       console.log('changed')
       this.options = { page: 1, itemsPerPage: 10 }
-      if (
-        this.params.currentTable == 'sem' ||
-        this.params.currentTable == 'ftir'
-      ) {
-        this.headers = this.semHeaders
-      } else if (this.params.currentTable == 'thin_sections') {
+      const h1 = this.baseHeaders.slice(0)
+      if (this.params.index == 'am-instr') {
+        const h2 = { text: 'AM/PM', value: 'status', width: '100' }
+        h1.splice(2, 0, h2)
+        this.headers = h1.slice(0)
+      } else if (this.params.index == 'thin') {
         this.headers = this.thinHeaders
+      } else if (this.params.index == 'house') {
+        const h2 = { text: 'Guests', value: 'status', width: '100' }
+        h1.splice(2, 0, h2)
+        this.headers = h1.slice(0)
       } else {
         this.headers = this.baseHeaders
       }
