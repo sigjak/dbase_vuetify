@@ -63,13 +63,14 @@
     <v-row>
       <v-col>
         <v-card>
-          <v-card-title class="text-uppercase text-center"
-            >{{ params.currentUnit }} {{ params.startingPage }}</v-card-title
-          >
+          <v-card-title class="text-uppercase "
+            >{{ params.currentUnit }}
+          </v-card-title>
+          <v-card-subtitle>{{ params.title }} </v-card-subtitle>
           <v-data-table
             v-model="selected"
             :headers="headers"
-            :items="params.data"
+            :items="tableData"
             :single-select="singleSelect"
             :custom-sort="customSort"
             item-key="id"
@@ -122,17 +123,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import moment from 'moment/moment'
 export default {
   data() {
     return {
+      // compkey: 1,
       options: {},
-
-      yearsToGet: 'lastTwo',
-
-      excelData: [],
-
       postdata: {
         ids: [],
         tablename: '',
@@ -153,22 +150,47 @@ export default {
       search: '',
       singleSelect: false,
       selected: [],
-      headers: [
+      semHeaders: [
         {
           text: 'Name',
           align: 'left',
           value: 'fullName',
-          width: 200
+          width: 180
         },
-        { text: 'Date', value: 'date', width: '150' },
-        { text: 'Email', value: 'email', width: '200' },
-        { text: 'Account', value: 'account' },
+        { text: 'Date', value: 'date', width: '120' },
+        {
+          text: 'AM/PM',
+          value: 'status',
+          width: '100'
+        },
+        { text: 'Email', value: 'email' },
+        { text: 'Account', value: 'account', width: '100' },
 
         { text: 'Supervisor', value: 'supervisor' },
         {
           text: 'Comments',
           value: 'comments',
-          width: 150,
+          width: 180,
+          sortable: false
+        },
+        { text: 'Actions', value: 'action', sortable: false }
+      ],
+      baseHeaders: [
+        {
+          text: 'Name',
+          align: 'left',
+          value: 'fullName',
+          width: 180
+        },
+        { text: 'Date', value: 'date', width: '120' },
+        { text: 'Email', value: 'email' },
+        { text: 'Account', value: 'account', width: '100' },
+
+        { text: 'Supervisor', value: 'supervisor' },
+        {
+          text: 'Comments',
+          value: 'comments',
+          width: 180,
           sortable: false
         },
         { text: 'Actions', value: 'action', sortable: false }
@@ -201,7 +223,9 @@ export default {
       })
       return items
     },
-
+    // changePage() {
+    //   this.compkey += 1
+    // },
     save() {
       if (this.editedIndex > -1) {
         this.editedItem.date = this.formattedDate
@@ -216,7 +240,7 @@ export default {
     },
 
     updateItem(item) {
-      this.editedIndex = this.params.data.indexOf(item)
+      this.editedIndex = this.tableData.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
@@ -253,9 +277,8 @@ export default {
     }
   },
   computed: {
-    params() {
-      return this.$store.state.params
-    },
+    ...mapState(['tableData', 'params']),
+
     excel() {
       return {
         Sheetname: this.params.currentUnit,
@@ -279,13 +302,22 @@ export default {
     }
   },
   watch: {
-    params() {
+    tableData() {
+      console.log('changed')
       this.options = { page: 1, itemsPerPage: 10 }
+      if (
+        this.params.currentTable == 'sem' ||
+        this.params.currentTable == 'ftir'
+      ) {
+        this.headers = this.semHeaders
+      } else {
+        this.headers = this.baseHeaders
+      }
     }
   },
 
   created() {
-    // console.log('CREATEDD')
+    console.log('CREATEDD')
     // if (this.table) {
     //   localStorage.setItem('storedTable', this.table)
     //   localStorage.setItem('storedUnit', this.unit)

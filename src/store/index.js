@@ -10,10 +10,10 @@ const base = axios.create({
 
 export default new Vuex.Store({
   state: {
+    tableData: [],
     params: {
-      data: [],
       currentUnit: '',
-      year: '',
+      years: '',
       currentTable: ''
     }
   },
@@ -25,6 +25,7 @@ export default new Vuex.Store({
       payload.data = response.data
       commit('SET_DATA', payload)
     },
+
     async deleteItems({ commit }, payload) {
       await base.post('delete.php', payload)
       commit('DELETE_ITEMS', payload.ids)
@@ -37,14 +38,18 @@ export default new Vuex.Store({
   },
   mutations: {
     DELETE_ITEMS: (state, incoming) =>
-      (state.params.data = state.params.data.filter(item => {
+      (state.tableData = state.tableData.filter(item => {
         return !incoming.includes(item.id)
       })),
     SET_DATA: (state, incoming) => {
-      state.params = incoming
+      state.params.currentUnit = incoming.currentUnit
+      state.params.title = incoming.title
+      state.params.currentTable = incoming.currentTable
+      state.params.years = incoming.years
+      state.tableData = incoming.data
     },
     UPDATE_TABLE: (state, incoming) => {
-      state.params.data.forEach(item => {
+      state.tableData.forEach(item => {
         if (item.id == incoming.id) {
           Object.assign(item, incoming)
         }

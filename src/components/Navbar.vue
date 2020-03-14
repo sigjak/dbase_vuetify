@@ -13,13 +13,12 @@
         <v-list>
           <v-list-item
             dense
+            @click="fetchData(item.params)"
             link
             v-for="item in sections[0].kinds"
             :key="item.unit"
           >
-            <v-list-item-title @click="fetchData(item.params)">{{
-              item.unit
-            }}</v-list-item-title>
+            <v-list-item-title>{{ item.unit }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -78,17 +77,10 @@
           </v-list-item>
         </v-list>
       </v-menu>
+-->
 
-      <v-menu open-on-hover offset-y>
-        <template v-slot:activator="{ on }">
-          <v-btn v-on="on" small text>select year</v-btn>
-        </template>
-        <v-list>
-          <v-list-item dense link>
-            <v-list-item-title>ALL YEARS</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu> -->
+      <v-btn @click="allYears()" small text>All years</v-btn>
+
       <v-spacer></v-spacer>
       <v-btn small text>To Bookings</v-btn>
       <v-btn small text> <v-icon>mdi-exit-to-app</v-icon>Exit </v-btn>
@@ -137,7 +129,8 @@ export default {
               params: {
                 currentTable: 'probeuse',
                 years: 'lastTwo',
-                currentUnit: 'Microprobe'
+                currentUnit: 'Microprobe',
+                title: 'Last Two Years'
               }
             },
             {
@@ -145,7 +138,8 @@ export default {
               params: {
                 currentTable: 'ftir',
                 years: 'lastTwo',
-                currentUnit: 'FTIR'
+                currentUnit: 'FTIR',
+                title: 'Last Two Years'
               }
             },
             {
@@ -153,7 +147,8 @@ export default {
               params: {
                 currentTable: 'sem',
                 years: 'lastTwo',
-                currentUnit: 'SEM'
+                currentUnit: 'SEM',
+                title: 'Last Two Years'
               }
             }
             // {
@@ -187,7 +182,19 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchData'])
+    ...mapActions(['fetchData']),
+    allYears() {
+      this.params.years = 'all'
+      this.params.title = 'All Years'
+      this.fetchData(this.params).then(() => {
+        this.params.years = 'lastTwo'
+      })
+    }
+  },
+  computed: {
+    params() {
+      return this.$store.state.params
+    }
   }
 }
 </script>
