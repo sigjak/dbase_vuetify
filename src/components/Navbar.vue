@@ -97,13 +97,12 @@
             <v-list-item-title>{{ section.name }}</v-list-item-title>
           </template>
           <v-list-item
+            @click="fetchData(item.params)"
             link
-            v-for="kind in section.kinds"
-            :key="kind.name"
-            router
-            :to="kind.route"
+            v-for="item in section.kinds"
+            :key="item.unit"
           >
-            <v-list-item-title class="pl-4">{{ kind.name }}</v-list-item-title>
+            <v-list-item-title class="pl-4">{{ item.unit }}</v-list-item-title>
           </v-list-item>
         </v-list-group>
       </v-list>
@@ -161,6 +160,36 @@ export default {
                 currentUnit: 'Thin Sections',
                 title: 'Last Two Years',
                 index: 'thin'
+              }
+            },
+            {
+              unit: 'Mass Spec AES',
+              params: {
+                currentTable: 'massaes',
+                years: 'lastTwo',
+                currentUnit: 'Mass Spec AES',
+                title: 'Last Two Years',
+                index: 'instr'
+              }
+            },
+            // {
+            //   unit: 'IC1000',
+            //   params: {
+            //     currentTable: 'ic1000',
+            //     years: 'lastTwo',
+            //     currentUnit: 'IC1000',
+            //     title: 'Last Two Years',
+            //     index: 'instr'
+            //   }
+            // }
+            {
+              unit: 'IC2000',
+              params: {
+                currentTable: 'ic2000',
+                years: 'lastTwo',
+                currentUnit: 'IC2000',
+                title: 'Last Two Years',
+                index: 'instr'
               }
             }
           ]

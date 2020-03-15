@@ -10,6 +10,7 @@ const base = axios.create({
 
 export default new Vuex.Store({
   state: {
+    mtTable: false,
     tableData: [],
     params: {
       currentUnit: '',
@@ -23,7 +24,12 @@ export default new Vuex.Store({
       const response = await base.get(
         `getTables.php?name=${payload.currentTable}&years=${payload.years}`
       )
+      if (response.data == 'empty table') {
+        commit('TRIGGER')
+        return
+      }
       payload.data = response.data
+
       commit('SET_DATA', payload)
     },
 
@@ -38,6 +44,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    TRIGGER: state => {
+      state.mtTable = !state.mtTable
+    },
     DELETE_ITEMS: (state, incoming) =>
       (state.tableData = state.tableData.filter(item => {
         return !incoming.includes(item.id)

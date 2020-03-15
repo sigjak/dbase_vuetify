@@ -129,6 +129,7 @@ export default {
   data() {
     return {
       // compkey: 1,
+
       options: {},
       postdata: {
         ids: [],
@@ -248,6 +249,14 @@ export default {
       this.$refs.downExcel.$el.click()
       this.selected = []
     },
+    empty() {
+      this.$swal({
+        icon: 'error',
+        title: 'Empty table !',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    },
     showAlert(item) {
       this.$swal({
         title: 'Are you sure?',
@@ -270,14 +279,14 @@ export default {
             this.selected = []
             this.postdata.ids = []
             this.postdata.tablename = ''
-            this.$swal('Deleted!', 'Item(s) deleted.', 'success')
+            this.$swal('Deleted!', 'success')
           })
         }
       })
     }
   },
   computed: {
-    ...mapState(['tableData', 'params']),
+    ...mapState(['tableData', 'params', 'mtTable']),
 
     excel() {
       const Sheetname = this.params.currentUnit
@@ -352,7 +361,8 @@ export default {
       } else {
         this.headers = this.baseHeaders
       }
-    }
+    },
+    mtTable: 'empty'
   },
 
   created() {
