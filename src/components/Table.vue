@@ -358,6 +358,10 @@ export default {
         const h2 = { text: 'Guests', value: 'status', width: '100' }
         h1.splice(2, 0, h2)
         this.headers = h1.slice(0)
+      } else if (this.params.index == 'other') {
+        const h2 = { text: 'Number', value: 'status', width: '100' }
+        h1.splice(2, 0, h2)
+        this.headers = h1.slice(0)
       } else {
         this.headers = this.baseHeaders
       }

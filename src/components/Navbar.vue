@@ -31,6 +31,7 @@
             dense
             @click="fetchData(item.params)"
             link
+            elevation:2
             v-for="item in sections[1].kinds"
             :key="item.unit"
           >
@@ -56,7 +57,7 @@
             <v-list-item-title>{{ item.name }}</v-list-item-title>
           </v-list-item>
         </v-list>
-      </v-menu>
+      </v-menu> -->
       <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
           <v-btn small text v-on="on">
@@ -66,17 +67,15 @@
         <v-list>
           <v-list-item
             dense
+            @click="fetchData(item.params)"
             link
             v-for="item in sections[3].kinds"
-            :key="item.name"
-            router
-            :to="item.route"
+            :key="item.unit"
           >
-            <v-list-item-title>{{ item.name }}</v-list-item-title>
+            <v-list-item-title>{{ item.unit }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
--->
 
       <v-btn @click="allYears()" small text>All years</v-btn>
 
@@ -163,6 +162,26 @@ export default {
               }
             },
             {
+              unit: 'ICP-MS',
+              params: {
+                currentTable: 'icpms',
+                years: 'lastTwo',
+                currentUnit: 'ICP-MS',
+                title: 'Last Two Years',
+                index: 'instr'
+              }
+            },
+            {
+              unit: 'ICP-OES',
+              params: {
+                currentTable: 'icpoes',
+                years: 'lastTwo',
+                currentUnit: 'ICP-OES',
+                title: 'Last Two Years',
+                index: 'instr'
+              }
+            },
+            {
               unit: 'Mass Spec AES',
               params: {
                 currentTable: 'massaes',
@@ -172,22 +191,42 @@ export default {
                 index: 'instr'
               }
             },
-            // {
-            //   unit: 'IC1000',
-            //   params: {
-            //     currentTable: 'ic1000',
-            //     years: 'lastTwo',
-            //     currentUnit: 'IC1000',
-            //     title: 'Last Two Years',
-            //     index: 'instr'
-            //   }
-            // }
+            {
+              unit: 'IC1000',
+              params: {
+                currentTable: 'ic1000',
+                years: 'lastTwo',
+                currentUnit: 'IC1000',
+                title: 'Last Two Years',
+                index: 'instr'
+              }
+            },
             {
               unit: 'IC2000',
               params: {
                 currentTable: 'ic2000',
                 years: 'lastTwo',
                 currentUnit: 'IC2000',
+                title: 'Last Two Years',
+                index: 'instr'
+              }
+            },
+            {
+              unit: 'ICP-OES-II',
+              params: {
+                currentTable: 'icpoes2',
+                years: 'lastTwo',
+                currentUnit: 'ICP-OES-II',
+                title: 'Last Two Years',
+                index: 'instr'
+              }
+            },
+            {
+              unit: 'MC-IPS-MS',
+              params: {
+                currentTable: 'mcicpms',
+                years: 'lastTwo',
+                currentUnit: 'MC-IPS-MS',
                 title: 'Last Two Years',
                 index: 'instr'
               }
@@ -241,7 +280,38 @@ export default {
         {
           icon: 'mdi-wallet-travel',
           name: 'Other',
-          kinds: [{ name: 'First Aid' }, { name: 'Iridium phone' }]
+          kinds: [
+            {
+              unit: 'Iridium Phones',
+              params: {
+                currentTable: 'iridium',
+                years: 'lastTwo',
+                currentUnit: 'Iridium Phones',
+                title: 'Last Two Years',
+                index: 'other'
+              }
+            },
+            {
+              unit: 'First Aid',
+              params: {
+                currentTable: 'firstaid',
+                years: 'lastTwo',
+                currentUnit: 'First Aid',
+                title: 'Last Two Years',
+                index: 'other'
+              }
+            },
+            {
+              unit: 'Gas Detectors',
+              params: {
+                currentTable: 'gasdetect',
+                years: 'lastTwo',
+                currentUnit: 'Gas Detectors',
+                title: 'Last Two Years',
+                index: 'other'
+              }
+            }
+          ]
         }
       ]
     }
