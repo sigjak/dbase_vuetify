@@ -100,8 +100,15 @@
                   Download selected</v-btn
                 >
 
-                <v-btn small class="error" @click="showAlert()"
+                <v-btn small class="error mr-4" @click="showAlert()"
                   >Delete selected</v-btn
+                >
+                <v-btn
+                  small
+                  class="success"
+                  v-if="params.index == 'vehicle'"
+                  @click="confirm(selected).then(() => (selected = []))"
+                  >Confirm Selected</v-btn
                 >
               </v-row>
             </template>
@@ -128,8 +135,6 @@ import moment from 'moment/moment'
 export default {
   data() {
     return {
-      // compkey: 1,
-
       options: {},
       postdata: {
         ids: [],
@@ -199,7 +204,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchData', 'updateTable', 'deleteItems']),
+    ...mapActions(['fetchData', 'updateTable', 'deleteItems', 'confirm']),
     customSort: function(items, index, isDesc) {
       items.sort((a, b) => {
         if (index[0] == 'date') {
@@ -224,9 +229,6 @@ export default {
       })
       return items
     },
-    // changePage() {
-    //   this.compkey += 1
-    // },
     save() {
       if (this.editedIndex > -1) {
         this.editedItem.date = this.formattedDate
@@ -345,6 +347,7 @@ export default {
   },
   watch: {
     tableData() {
+      this.selected = []
       console.log('changed')
       this.options = { page: 1, itemsPerPage: 10 }
       const h1 = this.baseHeaders.slice(0)
@@ -360,6 +363,10 @@ export default {
         this.headers = h1.slice(0)
       } else if (this.params.index == 'other') {
         const h2 = { text: 'Number', value: 'status', width: '100' }
+        h1.splice(2, 0, h2)
+        this.headers = h1.slice(0)
+      } else if (this.params.index == 'vehicle') {
+        const h2 = { text: 'Status', value: 'status', width: '100' }
         h1.splice(2, 0, h2)
         this.headers = h1.slice(0)
       } else {

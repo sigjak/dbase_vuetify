@@ -39,7 +39,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <!-- <v-menu open-on-hover offset-y>
+      <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
           <v-btn small text v-on="on">
             <v-icon>mdi-jeepney</v-icon>Vehicles</v-btn
@@ -48,16 +48,15 @@
         <v-list>
           <v-list-item
             dense
+            @click="fetchData(item.params)"
             link
             v-for="item in sections[2].kinds"
-            :key="item.name"
-            router
-            :to="item.route"
+            :key="item.unit"
           >
-            <v-list-item-title>{{ item.name }}</v-list-item-title>
+            <v-list-item-title>{{ item.unit }}</v-list-item-title>
           </v-list-item>
         </v-list>
-      </v-menu> -->
+      </v-menu>
       <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
           <v-btn small text v-on="on">
@@ -77,7 +76,7 @@
         </v-list>
       </v-menu>
 
-      <v-btn @click="allYears()" small text>All years</v-btn>
+      <v-btn @click="allYears()" width="80" small text>{{ buttonName }}</v-btn>
 
       <v-spacer></v-spacer>
       <v-btn small text>To Bookings</v-btn>
@@ -88,6 +87,7 @@
       <v-list dense>
         <v-list-group
           no-action
+          @click="fetchData(item.params)"
           :prepend-icon="section.icon"
           v-for="section in sections"
           :key="section.name"
@@ -110,10 +110,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   data() {
     return {
+      buttonName: 'All Years',
+
       drawer: false,
 
       sections: [
@@ -125,7 +127,7 @@ export default {
               unit: 'Microprobe',
               params: {
                 currentTable: 'probeuse',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'Microprobe',
                 title: 'Last Two Years',
                 index: 'instr'
@@ -135,7 +137,7 @@ export default {
               unit: 'FTIR',
               params: {
                 currentTable: 'ftir',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'FTIR',
                 title: 'Last Two Years',
                 index: 'am-instr'
@@ -145,7 +147,7 @@ export default {
               unit: 'SEM',
               params: {
                 currentTable: 'sem',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'SEM',
                 title: 'Last Two Years',
                 index: 'am-instr'
@@ -155,7 +157,7 @@ export default {
               unit: 'Thin Sections',
               params: {
                 currentTable: 'thin_sections',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'Thin Sections',
                 title: 'Last Two Years',
                 index: 'thin'
@@ -165,7 +167,7 @@ export default {
               unit: 'ICP-MS',
               params: {
                 currentTable: 'icpms',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'ICP-MS',
                 title: 'Last Two Years',
                 index: 'instr'
@@ -175,7 +177,7 @@ export default {
               unit: 'ICP-OES',
               params: {
                 currentTable: 'icpoes',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'ICP-OES',
                 title: 'Last Two Years',
                 index: 'instr'
@@ -185,7 +187,7 @@ export default {
               unit: 'Mass Spec AES',
               params: {
                 currentTable: 'massaes',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'Mass Spec AES',
                 title: 'Last Two Years',
                 index: 'instr'
@@ -195,7 +197,7 @@ export default {
               unit: 'IC1000',
               params: {
                 currentTable: 'ic1000',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'IC1000',
                 title: 'Last Two Years',
                 index: 'instr'
@@ -205,7 +207,7 @@ export default {
               unit: 'IC2000',
               params: {
                 currentTable: 'ic2000',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'IC2000',
                 title: 'Last Two Years',
                 index: 'instr'
@@ -215,7 +217,7 @@ export default {
               unit: 'ICP-OES-II',
               params: {
                 currentTable: 'icpoes2',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'ICP-OES-II',
                 title: 'Last Two Years',
                 index: 'instr'
@@ -225,7 +227,7 @@ export default {
               unit: 'MC-IPS-MS',
               params: {
                 currentTable: 'mcicpms',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'MC-IPS-MS',
                 title: 'Last Two Years',
                 index: 'instr'
@@ -241,7 +243,7 @@ export default {
               unit: 'Helluhraun',
               params: {
                 currentTable: 'helluhraun',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'Helluhraun',
                 title: 'Last Two Years',
                 index: 'house'
@@ -251,7 +253,7 @@ export default {
               unit: 'Dyngja',
               params: {
                 currentTable: 'dyngja',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'Dyngja',
                 title: 'Last Two Years',
                 index: 'house'
@@ -261,7 +263,7 @@ export default {
               unit: 'Vidimelur',
               params: {
                 currentTable: 'vidimelur',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'Vidimelur',
                 title: 'Last Two Years',
                 index: 'house'
@@ -273,8 +275,46 @@ export default {
           icon: 'mdi-jeepney',
           name: 'Vehicles',
           kinds: [
-            { name: 'Red Hilux', route: 'red_hilux' },
-            { name: 'Blue Hilux', route: 'blue_hilux' }
+            {
+              unit: 'Red Hilux ',
+              params: {
+                currentTable: 'red_hilux',
+                years: true,
+                currentUnit: 'Red Hilux ',
+                title: 'Last Two Years',
+                index: 'vehicle'
+              }
+            },
+            {
+              unit: 'Blue Hilux ',
+              params: {
+                currentTable: 'blue_hilux',
+                years: true,
+                currentUnit: 'Blue Hilux ',
+                title: 'Last Two Years',
+                index: 'vehicle'
+              }
+            },
+            {
+              unit: 'Open trailer ',
+              params: {
+                currentTable: 'opentrailer',
+                years: true,
+                currentUnit: 'Open trailer ',
+                title: 'Last Two Years',
+                index: 'vehicle'
+              }
+            },
+            {
+              unit: 'Warrior ',
+              params: {
+                currentTable: 'warrior',
+                years: true,
+                currentUnit: 'Warrior ',
+                title: 'Last Two Years',
+                index: 'vehicle'
+              }
+            }
           ]
         },
         {
@@ -285,7 +325,7 @@ export default {
               unit: 'Iridium Phones',
               params: {
                 currentTable: 'iridium',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'Iridium Phones',
                 title: 'Last Two Years',
                 index: 'other'
@@ -295,7 +335,7 @@ export default {
               unit: 'First Aid',
               params: {
                 currentTable: 'firstaid',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'First Aid',
                 title: 'Last Two Years',
                 index: 'other'
@@ -305,7 +345,7 @@ export default {
               unit: 'Gas Detectors',
               params: {
                 currentTable: 'gasdetect',
-                years: 'lastTwo',
+                years: true,
                 currentUnit: 'Gas Detectors',
                 title: 'Last Two Years',
                 index: 'other'
@@ -319,18 +359,35 @@ export default {
   methods: {
     ...mapActions(['fetchData']),
     allYears() {
-      this.params.years = 'all'
-      this.params.title = 'All Years'
-      this.fetchData(this.params).then(() => {
-        this.params.years = 'lastTwo'
-      })
+      this.params.years = !this.params.years
+      if (this.buttCheck === true) {
+        this.buttonName = 'Last Two'
+        this.params.title = 'All Years'
+      } else {
+        this.buttonName = 'All Years'
+        this.params.title = 'Last Two Years'
+      }
+      this.fetchData(this.params)
     }
   },
   computed: {
+    ...mapState(['buttCheck']),
     params() {
       return this.$store.state.params
     }
   }
+  // watch: {
+  //   buttCheck(newVal, oldVal) {
+  //     // console.log(` new value: ${newVal}, old value: ${oldVal} `)
+  //     // if (this.buttCheck === false) {
+  //     //   this.buttonName = 'Last Two'
+  //     //   this.params.title = 'All Years'
+  //     // } else {
+  //     //   this.buttonName = 'All Years'
+  //     //   this.params.title = 'Last Two'
+  //     // }
+  //   }
+  // }
 }
 </script>
 

@@ -10,16 +10,32 @@ const base = axios.create({
 
 export default new Vuex.Store({
   state: {
+    buttCheck: true,
     mtTable: false,
     tableData: [],
     params: {
       currentUnit: '',
-      years: '',
+      years: false,
       currentTable: '',
       index: ''
     }
   },
   actions: {
+    async confirm(context, payload) {
+      console.log(payload)
+      // payload.currentTable = context.state.params.currentTable
+      let confirmed = { ids: [], emails: [], dates: [] }
+      payload.forEach(item => {
+        confirmed.ids.push(item.id)
+        confirmed.emails.push(item.email)
+        confirmed.dates.push(item.date)
+      })
+      console.log(confirmed)
+      const response = await base.post('confirm.php', confirmed)
+      console.log(response.data)
+      //console.log(context.state.params.currentTable)
+      // context.commit('CONFIRM_VEHICLE', confirmedIds)
+    },
     async fetchData({ commit }, payload) {
       const response = await base.get(
         `getTables.php?name=${payload.currentTable}&years=${payload.years}`
@@ -44,6 +60,11 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    CONFIRM_VEHICLE: (state, Ids) => {
+      state.tableData.forEach(item => {
+        if (Ids.includes(item.id)) item.status = 'Yes'
+      })
+    },
     TRIGGER: state => {
       state.mtTable = !state.mtTable
     },
@@ -58,6 +79,11 @@ export default new Vuex.Store({
       state.params.years = incoming.years
       state.params.index = incoming.index
       state.tableData = incoming.data
+      if (incoming.years === true) {
+        state.buttCheck = true
+      } else {
+        state.buttCheck = false
+      }
     },
     UPDATE_TABLE: (state, incoming) => {
       state.tableData.forEach(item => {
