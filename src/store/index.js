@@ -23,18 +23,20 @@ export default new Vuex.Store({
   actions: {
     async confirm(context, payload) {
       console.log(payload)
-      // payload.currentTable = context.state.params.currentTable
-      let confirmed = { ids: [], emails: [], dates: [] }
+      const toBeConfirmed = {
+        confirmArray: payload,
+        currentTable: context.state.params.currentTable
+      }
+      console.log(toBeConfirmed)
+      let confirmIds = []
       payload.forEach(item => {
-        confirmed.ids.push(item.id)
-        confirmed.emails.push(item.email)
-        confirmed.dates.push(item.date)
+        confirmIds.push(item.id)
       })
-      console.log(confirmed)
-      const response = await base.post('confirm.php', confirmed)
+
+      const response = await base.post('confirm.php', toBeConfirmed)
       console.log(response.data)
-      //console.log(context.state.params.currentTable)
-      // context.commit('CONFIRM_VEHICLE', confirmedIds)
+
+      context.commit('CONFIRM_VEHICLE', confirmIds)
     },
     async fetchData({ commit }, payload) {
       const response = await base.get(
