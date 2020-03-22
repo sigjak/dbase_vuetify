@@ -107,7 +107,7 @@
                   small
                   class="success"
                   v-if="params.index == 'vehicle'"
-                  @click="confirm(selected).then(() => (selected = []))"
+                  @click="confirming()"
                   >Confirm Selected</v-btn
                 >
               </v-row>
@@ -155,52 +155,7 @@ export default {
       dialog: false,
       search: '',
       singleSelect: false,
-      selected: [],
-      headers: [],
-      thinHeaders: [
-        {
-          text: 'Name',
-          align: 'left',
-          value: 'fullName',
-          width: 180
-        },
-        { text: 'Date', value: 'date', width: '120' },
-        { text: 'Email', value: 'email' },
-        { text: 'Account', value: 'account', width: '100' },
-
-        { text: 'Supervisor', value: 'supervisor' },
-        { text: '27mm slide', value: 'slide27' },
-        { text: '27mm coated', value: 'slide27coated' },
-        { text: '1" round', value: 'oneround' },
-        { text: '1" polished', value: 'onepolished' },
-        { text: '1" mount', value: 'mountcoated' },
-        { text: '1" seven', value: 'oneseven' },
-        { text: 'carbon coated', value: 'carbon' },
-        { text: 'repolish', value: 'repolish' },
-        { text: 'Comments', value: 'comments', width: 150, sortable: false },
-        { text: 'Actions', value: 'action', sortable: false }
-      ],
-
-      baseHeaders: [
-        {
-          text: 'Name',
-          align: 'left',
-          value: 'fullName',
-          width: 180
-        },
-        { text: 'Date', value: 'date', width: '120' },
-        { text: 'Email', value: 'email' },
-        { text: 'Account', value: 'account', width: '100' },
-
-        { text: 'Supervisor', value: 'supervisor' },
-        {
-          text: 'Comments',
-          value: 'comments',
-          width: 180,
-          sortable: false
-        },
-        { text: 'Actions', value: 'action', sortable: false }
-      ]
+      selected: []
     }
   },
   methods: {
@@ -241,7 +196,6 @@ export default {
       this.dialog = false
       this.formattedDate = null
     },
-
     updateItem(item) {
       this.editedIndex = this.tableData.indexOf(item)
       this.editedItem = Object.assign({}, item)
@@ -285,11 +239,91 @@ export default {
           })
         }
       })
+    },
+    confirming() {
+      this.$store.commit('SET_CONFIRM_CHECK')
+      this.$swal({
+        title: 'Confirming and sending email',
+        type: 'info',
+        onBeforeOpen: () => {
+          this.$swal.showLoading()
+          console.log(this.$store.state.confirmCheck)
+          this.confirm(this.selected).then(() => {
+            this.selected = []
+            this.$swal.disableLoading()
+            if (this.$store.state.confirmCheck === true) {
+              this.showOk()
+            }
+            console.log('after show')
+          })
+        }
+      })
+    },
+    showOk() {
+      this.$swal({
+        showCloseButton: true,
+        type: 'success',
+        title: 'Confirmation mail sent!',
+        timer: 2000
+      })
     }
   },
   computed: {
     ...mapState(['tableData', 'params', 'mtTable']),
+    headers() {
+      const h1 = [
+        {
+          text: 'Name',
+          align: 'left',
+          value: 'fullName',
+          width: 180
+        },
+        { text: 'Date', value: 'date', width: '120' },
+        { text: 'Email', value: 'email' },
+        { text: 'Account', value: 'account', width: '100' },
 
+        { text: 'Supervisor', value: 'supervisor' },
+        {
+          text: 'Comments',
+          value: 'comments',
+          width: 180,
+          sortable: false
+        },
+        { text: 'Actions', value: 'action', sortable: false }
+      ]
+      const thin = [
+        { text: '27mm slide', value: 'slide27' },
+        { text: '27mm coated', value: 'slide27coated' },
+        { text: '1" round', value: 'oneround' },
+        { text: '1" polished', value: 'onepolished' },
+        { text: '1" mount', value: 'mountcoated' },
+        { text: '1" seven', value: 'oneseven' },
+        { text: 'carbon coated', value: 'carbon' },
+        { text: 'repolish', value: 'repolish' },
+        { text: 'Comments', value: 'comments', width: 150, sortable: false },
+        { text: 'Actions', value: 'action', sortable: false }
+      ]
+      if (this.params.index == 'am-instr') {
+        const h2 = { text: 'AM/PM', value: 'status', width: '100' }
+        h1.splice(2, 0, h2)
+        return h1.slice(0)
+      } else if (this.params.index == 'house') {
+        const h2 = { text: 'Guests', value: 'status', width: '100' }
+        h1.splice(2, 0, h2)
+        return h1.slice(0)
+      } else if (this.params.index == 'other') {
+        const h2 = { text: 'Number', value: 'status', width: '100' }
+        h1.splice(2, 0, h2)
+        return h1.slice(0)
+      } else if (this.params.index == 'vehicle') {
+        const h2 = { text: 'Status', value: 'status', width: '100' }
+        h1.splice(2, 0, h2)
+        return h1.slice(0)
+      } else if (this.params.index == 'thin') {
+        h1.splice(5, 2)
+        return [...h1.slice(0), ...thin]
+      } else return h1
+    },
     excel() {
       const Sheetname = this.params.currentUnit
       const Filename =
@@ -350,28 +384,6 @@ export default {
       this.selected = []
       console.log('changed')
       this.options = { page: 1, itemsPerPage: 10 }
-      const h1 = this.baseHeaders.slice(0)
-      if (this.params.index == 'am-instr') {
-        const h2 = { text: 'AM/PM', value: 'status', width: '100' }
-        h1.splice(2, 0, h2)
-        this.headers = h1.slice(0)
-      } else if (this.params.index == 'thin') {
-        this.headers = this.thinHeaders
-      } else if (this.params.index == 'house') {
-        const h2 = { text: 'Guests', value: 'status', width: '100' }
-        h1.splice(2, 0, h2)
-        this.headers = h1.slice(0)
-      } else if (this.params.index == 'other') {
-        const h2 = { text: 'Number', value: 'status', width: '100' }
-        h1.splice(2, 0, h2)
-        this.headers = h1.slice(0)
-      } else if (this.params.index == 'vehicle') {
-        const h2 = { text: 'Status', value: 'status', width: '100' }
-        h1.splice(2, 0, h2)
-        this.headers = h1.slice(0)
-      } else {
-        this.headers = this.baseHeaders
-      }
     },
     mtTable: 'empty'
   },

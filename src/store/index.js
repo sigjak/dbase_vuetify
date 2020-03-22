@@ -10,6 +10,7 @@ const base = axios.create({
 
 export default new Vuex.Store({
   state: {
+    confirmCheck: true,
     buttCheck: true,
     mtTable: false,
     tableData: [],
@@ -22,21 +23,20 @@ export default new Vuex.Store({
   },
   actions: {
     async confirm(context, payload) {
-      console.log(payload)
       const toBeConfirmed = {
         confirmArray: payload,
-        currentTable: context.state.params.currentTable
+        currentTable: context.state.params.currentTable,
+        currentUnit: context.state.params.currentUnit
       }
-      console.log(toBeConfirmed)
+      const response = await base.post('confirm.php', toBeConfirmed)
+      console.log(response.data)
       let confirmIds = []
       payload.forEach(item => {
         confirmIds.push(item.id)
       })
-
-      const response = await base.post('confirm.php', toBeConfirmed)
-      console.log(response.data)
-
-      context.commit('CONFIRM_VEHICLE', confirmIds)
+      if (response.data == 'sent') {
+        context.commit('CONFIRM_VEHICLE', confirmIds)
+      }
     },
     async fetchData({ commit }, payload) {
       const response = await base.get(
@@ -66,6 +66,7 @@ export default new Vuex.Store({
       state.tableData.forEach(item => {
         if (Ids.includes(item.id)) item.status = 'Yes'
       })
+      state.confirmCheck = true
     },
     TRIGGER: state => {
       state.mtTable = !state.mtTable
@@ -93,6 +94,7 @@ export default new Vuex.Store({
           Object.assign(item, incoming)
         }
       })
-    }
+    },
+    SET_CONFIRM_CHECK: state => (state.confirmCheck = false)
   }
 })
