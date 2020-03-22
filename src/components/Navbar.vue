@@ -87,7 +87,6 @@
       <v-list dense>
         <v-list-group
           no-action
-          @click="fetchData(item.params)"
           :prepend-icon="section.icon"
           v-for="section in sections"
           :key="section.name"
@@ -306,11 +305,51 @@ export default {
               }
             },
             {
+              unit: 'Closed trailer ',
+              params: {
+                currentTable: 'closedtrailer',
+                years: true,
+                currentUnit: 'Closed trailer ',
+                title: 'Last Two Years',
+                index: 'vehicle'
+              }
+            },
+            {
+              unit: 'Small trailer ',
+              params: {
+                currentTable: 'smalltrailer',
+                years: true,
+                currentUnit: 'Small trailer ',
+                title: 'Last Two Years',
+                index: 'vehicle'
+              }
+            },
+            {
               unit: 'Warrior ',
               params: {
                 currentTable: 'warrior',
                 years: true,
                 currentUnit: 'Warrior ',
+                title: 'Last Two Years',
+                index: 'vehicle'
+              }
+            },
+            {
+              unit: 'Viking A',
+              params: {
+                currentTable: 'viking_a',
+                years: true,
+                currentUnit: 'Viking A ',
+                title: 'Last Two Years',
+                index: 'vehicle'
+              }
+            },
+            {
+              unit: ' Viking B ',
+              params: {
+                currentTable: 'viking_b',
+                years: true,
+                currentUnit: 'Viking B ',
                 title: 'Last Two Years',
                 index: 'vehicle'
               }
@@ -391,4 +430,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.v-list-item:hover {
+  background: #dcdcdc;
+}
+</style>
