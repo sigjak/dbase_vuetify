@@ -4,12 +4,20 @@ import axios from 'axios'
 
 Vue.use(Vuex, axios)
 
-const base = axios.create({
-  baseURL: 'http://localhost/vuetiAPI'
+// TODO check this  table location Create new folder for tableapi
+let base = axios.create({
+  baseURL: 'https://microprobe.hi.is/aold/my-app/tableApi/',
+  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' }
 })
+if (process.env.NODE_ENV === 'development') {
+  base = axios.create({
+    baseURL: 'http://localhost/vuetiAPI'
+  })
+}
 
 export default new Vuex.Store({
   state: {
+    users: [],
     confirmCheck: true,
     buttCheck: true,
     mtTable: false,
@@ -50,7 +58,11 @@ export default new Vuex.Store({
 
       commit('SET_DATA', payload)
     },
-
+    async fetchUsers({ commit }, payload) {
+      const response = await base.get('getUsers.php')
+      payload = response.data
+      commit('SET_USERS', payload)
+    },
     async deleteItems({ commit }, payload) {
       await base.post('delete.php', payload)
       commit('DELETE_ITEMS', payload.ids)
@@ -95,6 +107,7 @@ export default new Vuex.Store({
         }
       })
     },
-    SET_CONFIRM_CHECK: state => (state.confirmCheck = false)
+    SET_CONFIRM_CHECK: state => (state.confirmCheck = false),
+    SET_USERS: (state, incoming) => (state.users = incoming)
   }
 })

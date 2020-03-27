@@ -135,7 +135,7 @@ import moment from 'moment/moment'
 export default {
   data() {
     return {
-      items: [1, 2, 3, 4],
+      // items: [1, 2, 3, 4],
       options: {},
       postdata: {
         ids: [],
@@ -271,10 +271,10 @@ export default {
   },
   computed: {
     ...mapState(['tableData', 'params', 'mtTable']),
-    count: function() {
-      console.log(this.items)
-      return this.items.length
-    },
+    // count: function() {
+    //   console.log(this.items)
+    //   return this.items.length
+    // },
 
     headers() {
       const h1 = [

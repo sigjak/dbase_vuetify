@@ -60,7 +60,7 @@
       <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
           <v-btn small text v-on="on">
-            <v-icon>mdi-wallet-travel</v-icon>Other</v-btn
+            <v-icon>mdi-phone-classic </v-icon> Other</v-btn
           >
         </template>
         <v-list>
@@ -415,18 +415,6 @@ export default {
       return this.$store.state.params
     }
   }
-  // watch: {
-  //   buttCheck(newVal, oldVal) {
-  //     // console.log(` new value: ${newVal}, old value: ${oldVal} `)
-  //     // if (this.buttCheck === false) {
-  //     //   this.buttonName = 'Last Two'
-  //     //   this.params.title = 'All Years'
-  //     // } else {
-  //     //   this.buttonName = 'All Years'
-  //     //   this.params.title = 'Last Two'
-  //     // }
-  //   }
-  // }
 }
 </script>
 
