@@ -1,6 +1,5 @@
 <template>
   <v-container fluid px-12>
-    <v-btn @click="changePage()">Page</v-btn>
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
         <v-card-title class="headline">Update</v-card-title>
