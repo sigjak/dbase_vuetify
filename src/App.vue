@@ -2,17 +2,27 @@
   <v-app>
     <v-content>
       <div v-if="!loggedIn">
+        <v-img
+          :src="require('./images/header_01.png')"
+          max-height="150"
+        ></v-img>
         <v-row class="im">
           <v-col cols="12">
-            <h1 class=" display-2 pt-12 text-center">
+            <h1 class=" display-2 pt-10 text-center grey--text">
               Institute of Earth Sciences
             </h1>
           </v-col>
         </v-row>
-        <v-row>
+
+        <v-row >
           <v-col cols="12">
-            <div class=" mx-12 my-12">
-              <v-dialog v-model="loginDialog" persistent width="400px">
+            <div>
+              <v-dialog
+                hide-overlay=""
+                v-model="loginDialog"
+                persistent
+                width="400px"
+              >
                 <v-card>
                   <v-card-title>IES DATABASE</v-card-title>
 
@@ -48,7 +58,7 @@
               </v-dialog>
             </div>
           </v-col>
-        </v-row>
+        </template>
       </div>
       <div v-if="loggedIn">
         <Navbar />
@@ -130,6 +140,10 @@ export default {
 }
 </script>
 <style lang="scss">
+.v-dialog {
+  align-self: flex-end;
+  margin-bottom: 15vh;
+}
 .im {
   background-image: url('images/dawn.jpg');
   background-size: cover;
