@@ -14,7 +14,7 @@
           </v-col>
         </v-row>
 
-        <v-row >
+        <v-row>
           <v-col cols="12">
             <div>
               <v-dialog
@@ -58,7 +58,7 @@
               </v-dialog>
             </div>
           </v-col>
-        </template>
+        </v-row>
       </div>
       <div v-if="loggedIn">
         <Navbar />
