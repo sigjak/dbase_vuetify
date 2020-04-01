@@ -1,46 +1,55 @@
 <template>
   <v-app>
     <v-content>
-      <div v-if="!loggedIn" class="im mx-12 my-12">
-        <h1 class=" display-2 pt-12 text-center">
-          Institute of Earth Sciences
-        </h1>
-        <v-dialog v-model="loginDialog" persistent width="400px">
-          <v-card>
-            <v-card-title>IES DATABASE</v-card-title>
+      <div v-if="!loggedIn">
+        <v-row class="im">
+          <v-col cols="12">
+            <h1 class=" display-2 pt-12 text-center">
+              Institute of Earth Sciences
+            </h1>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <div class=" mx-12 my-12">
+              <v-dialog v-model="loginDialog" persistent width="400px">
+                <v-card>
+                  <v-card-title>IES DATABASE</v-card-title>
 
-            <v-card-text>
-              <v-form v-model="valid">
-                <v-text-field
-                  v-model="login.name"
-                  :rules="[rules.required, rules.min]"
-                  hint="Login required"
-                  label="login"
-                ></v-text-field>
-                <v-text-field
-                  v-model="login.password"
-                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[rules.required, rules.pass]"
-                  :type="show1 ? 'text' : 'password'"
-                  label="password"
-                  hint="Password required"
-                  @click:append="show1 = !show1"
-                ></v-text-field>
-                <v-card-actions>
-                  <v-btn
-                    @click="submitting"
-                    :disabled="!valid"
-                    small
-                    color="primary"
-                    >Submit
-                  </v-btn>
-                </v-card-actions>
-              </v-form>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
+                  <v-card-text>
+                    <v-form v-model="valid">
+                      <v-text-field
+                        v-model="login.name"
+                        :rules="[rules.required, rules.min]"
+                        hint="Login required"
+                        label="login"
+                      ></v-text-field>
+                      <v-text-field
+                        v-model="login.password"
+                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                        :rules="[rules.required, rules.pass]"
+                        :type="show1 ? 'text' : 'password'"
+                        label="password"
+                        hint="Password required"
+                        @click:append="show1 = !show1"
+                      ></v-text-field>
+                      <v-card-actions>
+                        <v-btn
+                          @click="submitting"
+                          :disabled="!valid"
+                          small
+                          color="primary"
+                          >Submit
+                        </v-btn>
+                      </v-card-actions>
+                    </v-form>
+                  </v-card-text>
+                </v-card>
+              </v-dialog>
+            </div>
+          </v-col>
+        </v-row>
       </div>
-
       <div v-if="loggedIn">
         <Navbar />
 
@@ -90,15 +99,33 @@ export default {
   methods: {
     ...mapActions(['fetchData', 'fetchUsers']),
     submitting() {
-      this.fetchUsers()
-      this.loggedIn = true
-      let tt = this.$store.state.users
-      console.log(tt)
-      console.log(this.users)
-      this.loginDialog = false
+      // this.fetchUsers().then(() => {
+      //   let tt = this.$store.state.users
+      //  // console.log(tt)
+      // })
+      if (this.users.includes(this.login.name)) {
+        this.loggedIn = true
 
-      this.fetchData(this.params)
+        //console.log(this.users)
+        this.loginDialog = false
+      } else {
+        this.logErr()
+      }
+      // this.fetchData(this.params)
+    },
+    logErr() {
+      this.$swal({
+        title: 'Error!',
+        icon: 'error',
+        text: 'Wrong login.',
+        timer: 2000,
+        showConfirmButton: false
+      })
     }
+  },
+  created() {
+    this.fetchUsers()
+    this.fetchData(this.params)
   }
 }
 </script>
@@ -106,6 +133,6 @@ export default {
 .im {
   background-image: url('images/dawn.jpg');
   background-size: cover;
-  height: 90vh;
+  height: 100vh;
 }
 </style>

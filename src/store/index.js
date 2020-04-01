@@ -37,7 +37,7 @@ export default new Vuex.Store({
         currentUnit: context.state.params.currentUnit
       }
       const response = await base.post('confirm.php', toBeConfirmed)
-      console.log(response.data)
+      //console.log(response.data)
       let confirmIds = []
       payload.forEach(item => {
         confirmIds.push(item.id)

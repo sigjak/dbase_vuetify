@@ -83,7 +83,7 @@
       <v-btn small text> <v-icon>mdi-exit-to-app</v-icon>Exit </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer app v-model="drawer">
+    <!-- <v-navigation-drawer app v-model="drawer">
       <v-list dense>
         <v-list-group
           no-action
@@ -104,7 +104,7 @@
           </v-list-item>
         </v-list-group>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
   </nav>
 </template>
 
@@ -260,6 +260,7 @@ export default {
             },
             {
               unit: 'Vidimelur',
+
               params: {
                 currentTable: 'vidimelur',
                 years: true,

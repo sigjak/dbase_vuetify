@@ -130,7 +130,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import moment from 'moment/moment'
+import moment from 'moment/src/moment'
 export default {
   data() {
     return {
@@ -247,14 +247,14 @@ export default {
         type: 'info',
         onBeforeOpen: () => {
           this.$swal.showLoading()
-          console.log(this.$store.state.confirmCheck)
+          // console.log(this.$store.state.confirmCheck)
           this.confirm(this.selected).then(() => {
             this.selected = []
             this.$swal.disableLoading()
             if (this.$store.state.confirmCheck === true) {
               this.showOk()
             }
-            console.log('after show')
+            // console.log('after show')
           })
         }
       })
@@ -270,11 +270,6 @@ export default {
   },
   computed: {
     ...mapState(['tableData', 'params', 'mtTable']),
-    // count: function() {
-    //   console.log(this.items)
-    //   return this.items.length
-    // },
-
     headers() {
       const h1 = [
         {
@@ -387,14 +382,13 @@ export default {
   watch: {
     tableData() {
       this.selected = []
-      console.log('changed')
       this.options = { page: 1, itemsPerPage: 10 }
     },
     mtTable: 'empty'
   },
 
   created() {
-    console.log('CREATEDD')
+    // console.log('CREATEDD')
     // if (this.table) {
     //   localStorage.setItem('storedTable', this.table)
     //   localStorage.setItem('storedUnit', this.unit)
