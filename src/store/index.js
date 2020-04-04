@@ -4,7 +4,7 @@ import axios from 'axios'
 
 Vue.use(Vuex, axios)
 
-// TODO check this  table location Create new folder for tableapi
+// TODO check this  table location Create new folder for tableapi on server site
 let base = axios.create({
   baseURL: 'https://microprobe.hi.is/aold/my-app/tableApi/',
   headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' }
@@ -37,7 +37,6 @@ export default new Vuex.Store({
         currentUnit: context.state.params.currentUnit
       }
       const response = await base.post('confirm.php', toBeConfirmed)
-      //console.log(response.data)
       let confirmIds = []
       payload.forEach(item => {
         confirmIds.push(item.id)

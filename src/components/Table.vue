@@ -1,5 +1,6 @@
 <template>
   <v-container fluid px-12>
+    >
     <v-dialog v-model="dialog" max-width="600">
       <v-card>
         <v-card-title class="headline">Update</v-card-title>
@@ -134,7 +135,6 @@ import moment from 'moment/src/moment'
 export default {
   data() {
     return {
-      // items: [1, 2, 3, 4],
       options: {},
       postdata: {
         ids: [],
