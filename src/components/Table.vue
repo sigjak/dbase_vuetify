@@ -1,7 +1,10 @@
 <template>
   <v-container fluid px-12>
-    >
-    <v-dialog v-model="dialog" max-width="600">
+    <div v-if="updateModal">
+      <update-modal />
+    </div>
+
+    <!-- <v-dialog v-model="dialog" max-width="600">
       <v-card>
         <v-card-title class="headline">Update</v-card-title>
         <v-card-text>
@@ -48,7 +51,7 @@
           <v-btn color="primary lighten-1" @click="save()">Save</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
     <v-row justify="end">
       <v-col cols="6">
         <v-text-field
@@ -131,10 +134,16 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+
 import moment from 'moment/src/moment'
 export default {
+  components: {
+    UpdateModal: () => import('./UpdateDialog')
+  },
   data() {
     return {
+      updDialog: true,
+      updateModal: false,
       options: {},
       postdata: {
         ids: [],
@@ -159,7 +168,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchData', 'updateTable', 'deleteItems', 'confirm']),
+    ...mapActions([
+      'fetchData',
+      'updateTable',
+      'deleteItems',
+      'confirm',
+      'updateItemAction'
+    ]),
     customSort: function(items, index, isDesc) {
       items.sort((a, b) => {
         if (index[0] == 'date') {
@@ -199,7 +214,10 @@ export default {
     updateItem(item) {
       this.editedIndex = this.tableData.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      this.dialog = true
+      //call action
+      this.updateItemAction(this.editedItem)
+      // this.dialog = true
+      this.updateModal = true
     },
     downloadExcel() {
       this.$refs.downExcel.$el.click()
@@ -372,12 +390,12 @@ export default {
       //     { label: 'Comments', field: 'comments' }
       //   ]
       // }
-    },
-    formattedDate() {
-      return this.dagur
-        ? moment(this.dagur).format('DD-MM-YYYY')
-        : this.editedItem.date
     }
+    // formattedDate() {
+    //   return this.dagur
+    //     ? moment(this.dagur).format('DD-MM-YYYY')
+    //     : this.editedItem.date
+    // }
   },
   watch: {
     tableData() {

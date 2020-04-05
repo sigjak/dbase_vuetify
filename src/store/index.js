@@ -27,6 +27,15 @@ export default new Vuex.Store({
       years: false,
       currentTable: '',
       index: ''
+    },
+    editedItem: {
+      fullName: '',
+      email: '',
+      id: '',
+      account: '',
+      date: '',
+      supervisor: '',
+      tablename: ''
     }
   },
   actions: {
@@ -70,6 +79,9 @@ export default new Vuex.Store({
     async updateTable({ commit }, payload) {
       await base.post('update.php', payload)
       commit('UPDATE_TABLE', payload)
+    },
+    updateItemAction({ commit }, payload) {
+      commit('UPDATE_ITEM', payload)
     }
   },
   mutations: {
@@ -107,6 +119,7 @@ export default new Vuex.Store({
       })
     },
     SET_CONFIRM_CHECK: state => (state.confirmCheck = false),
-    SET_USERS: (state, incoming) => (state.users = incoming)
+    SET_USERS: (state, incoming) => (state.users = incoming),
+    UPDATE_ITEM: (state, incoming) => (state.editedItem = incoming)
   }
 })
