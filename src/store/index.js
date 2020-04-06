@@ -78,7 +78,10 @@ export default new Vuex.Store({
     },
 
     async updateTable({ commit }, payload) {
+      this.state.editedItem.tablename = this.state.params.currentTable
+
       await base.post('update.php', payload)
+
       commit('UPDATE_TABLE', payload)
     },
     updateItem({ commit }, item) {
@@ -123,6 +126,7 @@ export default new Vuex.Store({
           Object.assign(item, incoming)
         }
       })
+      state.updateModal = false
     },
     SET_CONFIRM_CHECK: state => (state.confirmCheck = false),
     SET_USERS: (state, incoming) => (state.users = incoming),

@@ -53,10 +53,15 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['close'])
+    ...mapActions(['close', 'updateTable']),
+    save() {
+      this.editedItem.date = this.formattedDate
+      //this.editedItem.tablename = this.params.currentTable
+      this.updateTable(this.editedItem).then((this.dagur = null))
+    }
   },
   computed: {
-    ...mapState(['editedItem', 'updateModal']),
+    ...mapState(['editedItem']),
     formattedDate() {
       return this.dagur
         ? moment(this.dagur).format('DD-MM-YYYY')

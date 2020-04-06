@@ -198,14 +198,14 @@ export default {
       })
       return items
     },
-    save() {
-      if (this.editedIndex > -1) {
-        this.editedItem.date = this.formattedDate
-        this.editedItem.tablename = this.params.currentTable
-        this.updateTable(this.editedItem).then((this.dagur = null))
-        this.dialog = false
-      }
-    },
+    // save() {
+    //   if (this.editedIndex > -1) {
+    //     this.editedItem.date = this.formattedDate
+    //     this.editedItem.tablename = this.params.currentTable
+    //     this.updateTable(this.editedItem).then((this.dagur = null))
+    //     this.dialog = false
+    //   }
+    // },
     // close() {
     //   this.dialog = false
     //   this.formattedDate = null
