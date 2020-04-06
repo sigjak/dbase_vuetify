@@ -129,8 +129,8 @@ export default {
                 years: true,
                 currentUnit: 'Microprobe',
                 title: 'Last Two Years',
-                index: 'instr'
-              }
+                index: 'instr',
+              },
             },
             {
               unit: 'FTIR',
@@ -139,8 +139,8 @@ export default {
                 years: true,
                 currentUnit: 'FTIR',
                 title: 'Last Two Years',
-                index: 'am-instr'
-              }
+                index: 'am-instr',
+              },
             },
             {
               unit: 'SEM',
@@ -149,8 +149,8 @@ export default {
                 years: true,
                 currentUnit: 'SEM',
                 title: 'Last Two Years',
-                index: 'am-instr'
-              }
+                index: 'am-instr',
+              },
             },
             {
               unit: 'Thin Sections',
@@ -159,8 +159,8 @@ export default {
                 years: true,
                 currentUnit: 'Thin Sections',
                 title: 'Last Two Years',
-                index: 'thin'
-              }
+                index: 'thin',
+              },
             },
             {
               unit: 'ICP-MS',
@@ -169,8 +169,8 @@ export default {
                 years: true,
                 currentUnit: 'ICP-MS',
                 title: 'Last Two Years',
-                index: 'instr'
-              }
+                index: 'instr',
+              },
             },
             {
               unit: 'ICP-OES',
@@ -179,8 +179,8 @@ export default {
                 years: true,
                 currentUnit: 'ICP-OES',
                 title: 'Last Two Years',
-                index: 'instr'
-              }
+                index: 'instr',
+              },
             },
             {
               unit: 'Mass Spec AES',
@@ -189,8 +189,8 @@ export default {
                 years: true,
                 currentUnit: 'Mass Spec AES',
                 title: 'Last Two Years',
-                index: 'instr'
-              }
+                index: 'instr',
+              },
             },
             {
               unit: 'IC1000',
@@ -199,8 +199,8 @@ export default {
                 years: true,
                 currentUnit: 'IC1000',
                 title: 'Last Two Years',
-                index: 'instr'
-              }
+                index: 'instr',
+              },
             },
             {
               unit: 'IC2000',
@@ -209,8 +209,8 @@ export default {
                 years: true,
                 currentUnit: 'IC2000',
                 title: 'Last Two Years',
-                index: 'instr'
-              }
+                index: 'instr',
+              },
             },
             {
               unit: 'ICP-OES-II',
@@ -219,8 +219,8 @@ export default {
                 years: true,
                 currentUnit: 'ICP-OES-II',
                 title: 'Last Two Years',
-                index: 'instr'
-              }
+                index: 'instr',
+              },
             },
             {
               unit: 'MC-IPS-MS',
@@ -229,10 +229,10 @@ export default {
                 years: true,
                 currentUnit: 'MC-IPS-MS',
                 title: 'Last Two Years',
-                index: 'instr'
-              }
-            }
-          ]
+                index: 'instr',
+              },
+            },
+          ],
         },
         {
           icon: 'mdi-home',
@@ -245,8 +245,8 @@ export default {
                 years: true,
                 currentUnit: 'Helluhraun',
                 title: 'Last Two Years',
-                index: 'house'
-              }
+                index: 'house',
+              },
             },
             {
               unit: 'Dyngja',
@@ -255,8 +255,8 @@ export default {
                 years: true,
                 currentUnit: 'Dyngja',
                 title: 'Last Two Years',
-                index: 'house'
-              }
+                index: 'house',
+              },
             },
             {
               unit: 'Vidimelur',
@@ -266,10 +266,10 @@ export default {
                 years: true,
                 currentUnit: 'Vidimelur',
                 title: 'Last Two Years',
-                index: 'house'
-              }
-            }
-          ]
+                index: 'house',
+              },
+            },
+          ],
         },
         {
           icon: 'mdi-jeepney',
@@ -282,8 +282,8 @@ export default {
                 years: true,
                 currentUnit: 'Red Hilux ',
                 title: 'Last Two Years',
-                index: 'vehicle'
-              }
+                index: 'vehicle',
+              },
             },
             {
               unit: 'Blue Hilux ',
@@ -292,8 +292,8 @@ export default {
                 years: true,
                 currentUnit: 'Blue Hilux ',
                 title: 'Last Two Years',
-                index: 'vehicle'
-              }
+                index: 'vehicle',
+              },
             },
             {
               unit: 'Open trailer ',
@@ -302,8 +302,8 @@ export default {
                 years: true,
                 currentUnit: 'Open trailer ',
                 title: 'Last Two Years',
-                index: 'vehicle'
-              }
+                index: 'vehicle',
+              },
             },
             {
               unit: 'Closed trailer ',
@@ -312,8 +312,8 @@ export default {
                 years: true,
                 currentUnit: 'Closed trailer ',
                 title: 'Last Two Years',
-                index: 'vehicle'
-              }
+                index: 'vehicle',
+              },
             },
             {
               unit: 'Small trailer ',
@@ -322,8 +322,8 @@ export default {
                 years: true,
                 currentUnit: 'Small trailer ',
                 title: 'Last Two Years',
-                index: 'vehicle'
-              }
+                index: 'vehicle',
+              },
             },
             {
               unit: 'Warrior ',
@@ -332,8 +332,8 @@ export default {
                 years: true,
                 currentUnit: 'Warrior ',
                 title: 'Last Two Years',
-                index: 'vehicle'
-              }
+                index: 'vehicle',
+              },
             },
             {
               unit: 'Viking A',
@@ -342,8 +342,8 @@ export default {
                 years: true,
                 currentUnit: 'Viking A ',
                 title: 'Last Two Years',
-                index: 'vehicle'
-              }
+                index: 'vehicle',
+              },
             },
             {
               unit: ' Viking B ',
@@ -352,10 +352,10 @@ export default {
                 years: true,
                 currentUnit: 'Viking B ',
                 title: 'Last Two Years',
-                index: 'vehicle'
-              }
-            }
-          ]
+                index: 'vehicle',
+              },
+            },
+          ],
         },
         {
           icon: 'mdi-wallet-travel',
@@ -368,8 +368,8 @@ export default {
                 years: true,
                 currentUnit: 'Iridium Phones',
                 title: 'Last Two Years',
-                index: 'other'
-              }
+                index: 'other',
+              },
             },
             {
               unit: 'First Aid',
@@ -378,8 +378,8 @@ export default {
                 years: true,
                 currentUnit: 'First Aid',
                 title: 'Last Two Years',
-                index: 'other'
-              }
+                index: 'other',
+              },
             },
             {
               unit: 'Gas Detectors',
@@ -388,12 +388,12 @@ export default {
                 years: true,
                 currentUnit: 'Gas Detectors',
                 title: 'Last Two Years',
-                index: 'other'
-              }
-            }
-          ]
-        }
-      ]
+                index: 'other',
+              },
+            },
+          ],
+        },
+      ],
     }
   },
   methods: {
@@ -408,14 +408,14 @@ export default {
         this.params.title = 'Last Two Years'
       }
       this.fetchData(this.params)
-    }
+    },
   },
   computed: {
     ...mapState(['buttCheck']),
     params() {
       return this.$store.state.params
-    }
-  }
+    },
+  },
 }
 </script>
 

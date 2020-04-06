@@ -7,11 +7,11 @@ Vue.use(Vuex, axios)
 // TODO check this  table location Create new folder for tableapi on server site
 let base = axios.create({
   baseURL: 'https://microprobe.hi.is/aold/my-app/tableApi/',
-  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' }
+  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' },
 })
 if (process.env.NODE_ENV === 'development') {
   base = axios.create({
-    baseURL: 'http://localhost/vuetiAPI'
+    baseURL: 'http://localhost/vuetiAPI',
   })
 }
 
@@ -26,19 +26,19 @@ export default new Vuex.Store({
       currentUnit: '',
       years: false,
       currentTable: '',
-      index: ''
-    }
+      index: '',
+    },
   },
   actions: {
     async confirm(context, payload) {
       const toBeConfirmed = {
         confirmArray: payload,
         currentTable: context.state.params.currentTable,
-        currentUnit: context.state.params.currentUnit
+        currentUnit: context.state.params.currentUnit,
       }
       const response = await base.post('confirm.php', toBeConfirmed)
       let confirmIds = []
-      payload.forEach(item => {
+      payload.forEach((item) => {
         confirmIds.push(item.id)
       })
       if (response.data == 'sent') {
@@ -70,20 +70,20 @@ export default new Vuex.Store({
     async updateTable({ commit }, payload) {
       await base.post('update.php', payload)
       commit('UPDATE_TABLE', payload)
-    }
+    },
   },
   mutations: {
     CONFIRM_VEHICLE: (state, Ids) => {
-      state.tableData.forEach(item => {
+      state.tableData.forEach((item) => {
         if (Ids.includes(item.id)) item.status = 'Yes'
       })
       state.confirmCheck = true
     },
-    TRIGGER: state => {
+    TRIGGER: (state) => {
       state.mtTable = !state.mtTable
     },
     DELETE_ITEMS: (state, incoming) =>
-      (state.tableData = state.tableData.filter(item => {
+      (state.tableData = state.tableData.filter((item) => {
         return !incoming.includes(item.id)
       })),
     SET_DATA: (state, incoming) => {
@@ -100,13 +100,13 @@ export default new Vuex.Store({
       }
     },
     UPDATE_TABLE: (state, incoming) => {
-      state.tableData.forEach(item => {
+      state.tableData.forEach((item) => {
         if (item.id == incoming.id) {
           Object.assign(item, incoming)
         }
       })
     },
-    SET_CONFIRM_CHECK: state => (state.confirmCheck = false),
-    SET_USERS: (state, incoming) => (state.users = incoming)
-  }
+    SET_CONFIRM_CHECK: (state) => (state.confirmCheck = false),
+    SET_USERS: (state, incoming) => (state.users = incoming),
+  },
 })
