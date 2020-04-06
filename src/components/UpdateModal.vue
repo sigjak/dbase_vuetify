@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="600" class="mx-auto zeta">
+  <v-card elevation="5" max-width="600" class=" zeta">
     <v-card-title class="headline">Update</v-card-title>
     <v-card-text>
       <v-row>
@@ -38,13 +38,13 @@
       </v-row>
     </v-card-text>
     <v-card-actions>
-      <v-btn @click="dialog = !dialog">Close</v-btn>
+      <v-btn @click="close">Close</v-btn>
       <v-btn color="primary lighten-1" @click="save()">Save</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import moment from 'moment/src/moment'
 export default {
   data() {
@@ -52,9 +52,11 @@ export default {
       dagur: null
     }
   },
-  methods: {},
+  methods: {
+    ...mapActions(['close'])
+  },
   computed: {
-    ...mapState(['editedItem']),
+    ...mapState(['editedItem', 'updateModal']),
     formattedDate() {
       return this.dagur
         ? moment(this.dagur).format('DD-MM-YYYY')
@@ -67,8 +69,10 @@ export default {
 .zeta {
   position: fixed;
   z-index: 200;
-  left: 100;
-  top: 300;
+  left: 0;
+  top: 0;
   margin-top: 200px;
+
+  margin-left: 30%;
 }
 </style>

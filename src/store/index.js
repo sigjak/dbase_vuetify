@@ -17,6 +17,7 @@ if (process.env.NODE_ENV === 'development') {
 
 export default new Vuex.Store({
   state: {
+    updateModal: false,
     users: [],
     confirmCheck: true,
     buttCheck: true,
@@ -80,8 +81,13 @@ export default new Vuex.Store({
       await base.post('update.php', payload)
       commit('UPDATE_TABLE', payload)
     },
-    updateItemAction({ commit }, payload) {
+    updateItem({ commit }, item) {
+      let payload = Object.assign({}, item)
+
       commit('UPDATE_ITEM', payload)
+    },
+    close({ commit }) {
+      commit('CLOSE')
     }
   },
   mutations: {
@@ -120,6 +126,10 @@ export default new Vuex.Store({
     },
     SET_CONFIRM_CHECK: state => (state.confirmCheck = false),
     SET_USERS: (state, incoming) => (state.users = incoming),
-    UPDATE_ITEM: (state, incoming) => (state.editedItem = incoming)
+    UPDATE_ITEM: (state, incoming) => {
+      state.editedItem = incoming
+      state.updateModal = true
+    },
+    CLOSE: state => (state.updateModal = false)
   }
 })

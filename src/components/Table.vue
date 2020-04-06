@@ -138,29 +138,28 @@ import { mapActions, mapState } from 'vuex'
 import moment from 'moment/src/moment'
 export default {
   components: {
-    UpdateModal: () => import('./UpdateDialog')
+    UpdateModal: () => import('./UpdateModal')
   },
   data() {
     return {
-      updDialog: true,
-      updateModal: false,
+      //updDialog: true,
       options: {},
       postdata: {
         ids: [],
         tablename: '',
         data: []
       },
-      dagur: null,
-      editedItem: {
-        fullName: '',
-        email: '',
-        id: '',
-        account: '',
-        date: '',
-        supervisor: '',
-        tablename: ''
-      },
-      editedIndex: -1,
+      //dagur: null,
+      // editedItem: {
+      //   fullName: '',
+      //   email: '',
+      //   id: '',
+      //   account: '',
+      //   date: '',
+      //   supervisor: '',
+      //   tablename: ''
+      // },
+      //editedIndex: -1,
       dialog: false,
       search: '',
       singleSelect: false,
@@ -173,7 +172,7 @@ export default {
       'updateTable',
       'deleteItems',
       'confirm',
-      'updateItemAction'
+      'updateItem'
     ]),
     customSort: function(items, index, isDesc) {
       items.sort((a, b) => {
@@ -207,18 +206,20 @@ export default {
         this.dialog = false
       }
     },
-    close() {
-      this.dialog = false
-      this.formattedDate = null
-    },
-    updateItem(item) {
-      this.editedIndex = this.tableData.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      //call action
-      this.updateItemAction(this.editedItem)
-      // this.dialog = true
-      this.updateModal = true
-    },
+    // close() {
+    //   this.dialog = false
+    //   this.formattedDate = null
+    // },
+    // updateItem(item) {
+    //   //this.editedIndex = this.tableData.indexOf(item)
+    //   //this.editedItem = Object.assign({}, item)
+    //   //call action
+    //   // this.updateItemAction(this.editedItem)
+    //   this.updateItemAction(item)
+
+    //   // this.dialog = true
+    //   this.updateModal = true
+    // },
     downloadExcel() {
       this.$refs.downExcel.$el.click()
       this.selected = []
@@ -287,7 +288,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['tableData', 'params', 'mtTable']),
+    ...mapState(['tableData', 'params', 'mtTable', 'updateModal']),
     headers() {
       const h1 = [
         {
