@@ -66,7 +66,7 @@
     <v-row>
       <v-col>
         <v-card>
-          <v-card-title class="text-uppercase "
+          <v-card-title class="text-uppercase"
             >{{ params.currentUnit }}
           </v-card-title>
           <v-card-subtitle>{{ params.title }} </v-card-subtitle>
@@ -138,7 +138,7 @@ import { mapActions, mapState } from 'vuex'
 import moment from 'moment/src/moment'
 export default {
   components: {
-    UpdateModal: () => import('./UpdateModal')
+    UpdateModal: () => import('./UpdateModal'),
   },
   data() {
     return {
@@ -147,7 +147,7 @@ export default {
       postdata: {
         ids: [],
         tablename: '',
-        data: []
+        data: [],
       },
       //dagur: null,
       // editedItem: {
@@ -163,12 +163,12 @@ export default {
       dialog: false,
       search: '',
       singleSelect: false,
-      selected: []
+      selected: [],
     }
   },
   methods: {
     ...mapActions(['fetchData', 'deleteItems', 'confirm', 'updateItem']),
-    customSort: function(items, index, isDesc) {
+    customSort: function (items, index, isDesc) {
       items.sort((a, b) => {
         if (index[0] == 'date') {
           if (!isDesc[0]) {
@@ -201,7 +201,7 @@ export default {
         icon: 'error',
         title: 'Empty table !',
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       })
     },
     showAlert(item) {
@@ -212,11 +212,11 @@ export default {
         showCancelButton: true,
         cancelButtonColor: '#3085d6',
         confirmButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then(result => {
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
         if (result.value) {
           if (item) this.postdata.ids.push(item.id)
-          this.selected.forEach(item => {
+          this.selected.forEach((item) => {
             this.postdata.ids.push(item.id)
           })
           this.postdata.tablename = this.params.currentTable
@@ -247,7 +247,7 @@ export default {
             }
             // console.log('after show')
           })
-        }
+        },
       })
     },
     showOk() {
@@ -255,9 +255,9 @@ export default {
         showCloseButton: true,
         type: 'success',
         title: 'Confirmation mail sent!',
-        timer: 2000
+        timer: 2000,
       })
-    }
+    },
   },
   computed: {
     ...mapState(['tableData', 'params', 'mtTable', 'updateModal']),
@@ -267,7 +267,7 @@ export default {
           text: 'Name',
           align: 'left',
           value: 'fullName',
-          width: 180
+          width: 180,
         },
         { text: 'Date', value: 'date', width: '120' },
         { text: 'Email', value: 'email' },
@@ -278,9 +278,9 @@ export default {
           text: 'Comments',
           value: 'comments',
           width: 180,
-          sortable: false
+          sortable: false,
         },
-        { text: 'Actions', value: 'action', sortable: false }
+        { text: 'Actions', value: 'action', sortable: false },
       ]
       const thin = [
         { text: '27mm slide', value: 'slide27' },
@@ -292,7 +292,7 @@ export default {
         { text: 'carbon coated', value: 'carbon' },
         { text: 'repolish', value: 'repolish' },
         { text: 'Comments', value: 'comments', width: 150, sortable: false },
-        { text: 'Actions', value: 'action', sortable: false }
+        { text: 'Actions', value: 'action', sortable: false },
       ]
       if (this.params.index == 'am-instr') {
         const h2 = { text: 'AM/PM', value: 'status', width: '100' }
@@ -327,7 +327,7 @@ export default {
         { label: 'Email', field: 'email' },
         { label: 'Account', field: 'account' },
         { label: 'Supervisor', field: 'supervisor' },
-        { label: 'Comments', field: 'comments' }
+        { label: 'Comments', field: 'comments' },
       ]
       const thin = [
         { label: 'Slide 27', field: 'slide27' },
@@ -337,7 +337,7 @@ export default {
         { label: '1" seven ', field: 'mountcoated' },
         { label: 'Mount Coated', field: 'oneseven' },
         { label: 'C Coated', field: 'carbon' },
-        { label: 'Repolished ', field: 'repolish' }
+        { label: 'Repolished ', field: 'repolish' },
       ]
       if (this.params.currentTable == 'thin_sections') {
         Columns = base.concat(thin)
@@ -347,7 +347,7 @@ export default {
       return {
         Sheetname,
         Filename,
-        Columns
+        Columns,
       }
       // return {
       //   Sheetname: this.params.currentUnit,
@@ -363,14 +363,14 @@ export default {
       //     { label: 'Comments', field: 'comments' }
       //   ]
       // }
-    }
+    },
   },
   watch: {
     tableData() {
       this.selected = []
       this.options = { page: 1, itemsPerPage: 10 }
     },
-    mtTable: 'empty'
+    mtTable: 'empty',
   },
   created() {
     // console.log('CREATEDD')
@@ -387,7 +387,7 @@ export default {
     // let payload = { tablename: this.currentTable, years: this.yearsToGet }
     // // this.getData(this.currentTable, this.yearsToGet)
     // this.fetchData(payload)
-  }
+  },
 }
 </script>
 >

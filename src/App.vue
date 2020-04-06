@@ -8,7 +8,7 @@
         ></v-img>
         <v-row class="im">
           <v-col cols="12">
-            <h1 class=" display-2 pt-10 text-center grey--text">
+            <h1 class="display-2 pt-10 text-center grey--text">
               Institute of Earth Sciences
             </h1>
           </v-col>
@@ -77,7 +77,7 @@ export default {
   name: 'App',
   components: {
     Navbar,
-    Table
+    Table,
   },
   data() {
     return {
@@ -85,12 +85,12 @@ export default {
       valid: false,
       login: {
         name: '',
-        password: ''
+        password: '',
       },
       rules: {
-        required: v => (v && v.length >= 3) || 'Required.',
-        pass: v => v === 'askja' || 'Required',
-        min: v => v.length >= 3 || 'Login required'
+        required: (v) => (v && v.length >= 3) || 'Required.',
+        pass: (v) => v === 'askja' || 'Required',
+        min: (v) => v.length >= 3 || 'Login required',
       },
       show1: false,
       params: {
@@ -98,13 +98,13 @@ export default {
         years: true,
         currentUnit: 'Microprobe',
         title: 'Last Two Years',
-        index: 'instr'
+        index: 'instr',
       },
-      loginDialog: true
+      loginDialog: true,
     }
   },
   computed: {
-    ...mapState(['users'])
+    ...mapState(['users']),
   },
   methods: {
     ...mapActions(['fetchData', 'fetchUsers']),
@@ -129,14 +129,14 @@ export default {
         icon: 'error',
         text: 'Wrong login.',
         timer: 2000,
-        showConfirmButton: false
+        showConfirmButton: false,
       })
-    }
+    },
   },
   created() {
     this.fetchUsers()
     this.fetchData(this.params)
-  }
+  },
 }
 </script>
 <style lang="scss">

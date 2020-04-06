@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="5" max-width="600" class=" zeta">
+  <v-card elevation="5" max-width="600" class="zeta">
     <v-card-title class="headline">Update</v-card-title>
     <v-card-text>
       <v-row>
@@ -49,7 +49,7 @@ import moment from 'moment/src/moment'
 export default {
   data() {
     return {
-      dagur: null
+      dagur: null,
     }
   },
   methods: {
@@ -57,7 +57,7 @@ export default {
     save() {
       this.editedItem.date = this.formattedDate
       this.updateTable(this.editedItem).then((this.dagur = null))
-    }
+    },
   },
   computed: {
     ...mapState(['editedItem']),
@@ -65,8 +65,8 @@ export default {
       return this.dagur
         ? moment(this.dagur).format('DD-MM-YYYY')
         : this.editedItem.date
-    }
-  }
+    },
+  },
 }
 </script>
 <style lang="scss">
