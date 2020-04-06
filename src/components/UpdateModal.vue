@@ -38,7 +38,7 @@
       </v-row>
     </v-card-text>
     <v-card-actions>
-      <v-btn @click="close">Close</v-btn>
+      <v-btn @click="$store.commit('CLOSE')">Close</v-btn>
       <v-btn color="primary lighten-1" @click="save()">Save</v-btn>
     </v-card-actions>
   </v-card>
@@ -53,10 +53,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['close', 'updateTable']),
+    ...mapActions(['updateTable']),
     save() {
       this.editedItem.date = this.formattedDate
-      //this.editedItem.tablename = this.params.currentTable
       this.updateTable(this.editedItem).then((this.dagur = null))
     }
   },
@@ -77,7 +76,6 @@ export default {
   left: 0;
   top: 0;
   margin-top: 200px;
-
   margin-left: 30%;
 }
 </style>

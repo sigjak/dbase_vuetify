@@ -167,13 +167,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'fetchData',
-      'updateTable',
-      'deleteItems',
-      'confirm',
-      'updateItem'
-    ]),
+    ...mapActions(['fetchData', 'deleteItems', 'confirm', 'updateItem']),
     customSort: function(items, index, isDesc) {
       items.sort((a, b) => {
         if (index[0] == 'date') {
@@ -198,28 +192,6 @@ export default {
       })
       return items
     },
-    // save() {
-    //   if (this.editedIndex > -1) {
-    //     this.editedItem.date = this.formattedDate
-    //     this.editedItem.tablename = this.params.currentTable
-    //     this.updateTable(this.editedItem).then((this.dagur = null))
-    //     this.dialog = false
-    //   }
-    // },
-    // close() {
-    //   this.dialog = false
-    //   this.formattedDate = null
-    // },
-    // updateItem(item) {
-    //   //this.editedIndex = this.tableData.indexOf(item)
-    //   //this.editedItem = Object.assign({}, item)
-    //   //call action
-    //   // this.updateItemAction(this.editedItem)
-    //   this.updateItemAction(item)
-
-    //   // this.dialog = true
-    //   this.updateModal = true
-    // },
     downloadExcel() {
       this.$refs.downExcel.$el.click()
       this.selected = []
@@ -254,7 +226,7 @@ export default {
             this.selected = []
             this.postdata.ids = []
             this.postdata.tablename = ''
-            this.$swal('Deleted!', 'success')
+            this.$swal({ title: 'Deleted!', icon: 'success', timer: 1500 })
           })
         }
       })
@@ -392,11 +364,6 @@ export default {
       //   ]
       // }
     }
-    // formattedDate() {
-    //   return this.dagur
-    //     ? moment(this.dagur).format('DD-MM-YYYY')
-    //     : this.editedItem.date
-    // }
   },
   watch: {
     tableData() {
@@ -405,7 +372,6 @@ export default {
     },
     mtTable: 'empty'
   },
-
   created() {
     // console.log('CREATEDD')
     // if (this.table) {
@@ -432,16 +398,4 @@ export default {
   font-size: 0.6rem;
   max-height: 48px;
 }
-/* ::v-deep .v-data-table tr td:nth-last-child(2) {
-  display: block;
-
-  font-size: 0.6rem;
-  overflow-y: auto;
-} */
-/* ::v-deep.v-data-table tr th:nth-child(4) {
-  display: none;
-}
-::v-deep .v-data-table tr td:nth-child(4) {
-  display: none;
-} */
 </style>
