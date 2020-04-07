@@ -19,46 +19,47 @@
 
         <v-row>
           <v-col cols="12">
-            <div>
-              <v-dialog
+            <div class="dd">
+              <!-- <v-dialog
+                class="mt-4"
                 hide-overlay=""
                 v-model="loginDialog"
                 persistent
                 width="400px"
-              >
-                <v-card>
-                  <v-card-title>IES DATABASE</v-card-title>
+              > -->
+              <v-card width="400">
+                <v-card-title>IES DATABASE</v-card-title>
 
-                  <v-card-text>
-                    <v-form v-model="valid">
-                      <v-text-field
-                        v-model="login.name"
-                        :rules="[rules.required, rules.min]"
-                        hint="Login required"
-                        label="login"
-                      ></v-text-field>
-                      <v-text-field
-                        v-model="login.password"
-                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                        :rules="[rules.required, rules.pass]"
-                        :type="show1 ? 'text' : 'password'"
-                        label="password"
-                        hint="Password required"
-                        @click:append="show1 = !show1"
-                      ></v-text-field>
-                      <v-card-actions>
-                        <v-btn
-                          @click="submitting"
-                          :disabled="!valid"
-                          small
-                          color="primary"
-                          >Submit
-                        </v-btn>
-                      </v-card-actions>
-                    </v-form>
-                  </v-card-text>
-                </v-card>
-              </v-dialog>
+                <v-card-text>
+                  <v-form v-model="valid">
+                    <v-text-field
+                      v-model="login.name"
+                      :rules="[rules.required, rules.min]"
+                      hint="Login required"
+                      label="login"
+                    ></v-text-field>
+                    <v-text-field
+                      v-model="login.password"
+                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                      :rules="[rules.required, rules.pass]"
+                      :type="show1 ? 'text' : 'password'"
+                      label="password"
+                      hint="Password required"
+                      @click:append="show1 = !show1"
+                    ></v-text-field>
+                    <v-card-actions>
+                      <v-btn
+                        @click="submitting"
+                        :disabled="!valid"
+                        small
+                        color="primary"
+                        >Submit
+                      </v-btn>
+                    </v-card-actions>
+                  </v-form>
+                </v-card-text>
+              </v-card>
+              <!-- </v-dialog> -->
             </div>
           </v-col>
         </v-row>
@@ -143,9 +144,22 @@ export default {
 }
 </script>
 <style lang="scss">
-.v-dialog {
-  margin-bottom: 200px;
+.dd {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 15vh;
+  width: 100%;
+  height: 100%;
 }
+//   position: fixed;
+//   left: 36%;
+//   top: 45%;
+//   z-index: 10;
+//   width: 400px;
+// }
 .im {
   background-image: url('images/dawn.jpg');
   background-size: cover;

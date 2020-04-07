@@ -89,7 +89,7 @@ import { mapActions, mapState } from 'vuex'
 import moment from 'moment/src/moment'
 export default {
   components: {
-    UpdateModal: () => import('./UpdateModal'),
+    UpdateModal: () => import(/*webpackChunkName: "update"*/ './UpdateModal'),
   },
   data() {
     return {
@@ -204,7 +204,7 @@ export default {
           text: 'Name',
           align: 'left',
           value: 'fullName',
-          width: 180,
+          width: 220,
         },
         { text: 'Date', value: 'date', width: '120' },
         { text: 'Email', value: 'email' },

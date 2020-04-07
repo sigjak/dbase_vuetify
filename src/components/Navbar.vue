@@ -1,8 +1,9 @@
 <template>
   <nav>
     <v-app-bar dense app color="indigo" dark>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>IES Database</v-toolbar-title>
+      <v-icon> mdi-database</v-icon>
+
+      <v-toolbar-title class="pl-1">&nbsp;IES Database</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
@@ -60,7 +61,8 @@
       <v-menu open-on-hover offset-y>
         <template v-slot:activator="{ on }">
           <v-btn small text v-on="on">
-            <v-icon>mdi-phone-classic </v-icon> Other</v-btn
+            <v-icon>mdi-phone-classic </v-icon>
+            <span class="ml-1"> Other </span></v-btn
           >
         </template>
         <v-list>
@@ -79,7 +81,9 @@
       <v-btn @click="allYears()" width="80" small text>{{ buttonName }}</v-btn>
 
       <v-spacer></v-spacer>
-      <v-btn href="https://microprobe.hi.is/" small text>To Bookings</v-btn>
+      <v-btn href="https://microprobe.hi.is/selectItem" small text
+        >To Bookings</v-btn
+      >
       <v-btn href="https://jardvis.hi.is/" small text>
         <v-icon>mdi-exit-to-app</v-icon>Exit
       </v-btn>
