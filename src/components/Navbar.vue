@@ -79,32 +79,11 @@
       <v-btn @click="allYears()" width="80" small text>{{ buttonName }}</v-btn>
 
       <v-spacer></v-spacer>
-      <v-btn small text>To Bookings</v-btn>
-      <v-btn small text> <v-icon>mdi-exit-to-app</v-icon>Exit </v-btn>
+      <v-btn href="https://microprobe.hi.is/" small text>To Bookings</v-btn>
+      <v-btn href="https://jardvis.hi.is/" small text>
+        <v-icon>mdi-exit-to-app</v-icon>Exit
+      </v-btn>
     </v-app-bar>
-
-    <!-- <v-navigation-drawer app v-model="drawer">
-      <v-list dense>
-        <v-list-group
-          no-action
-          :prepend-icon="section.icon"
-          v-for="section in sections"
-          :key="section.name"
-        >
-          <template v-slot:activator>
-            <v-list-item-title>{{ section.name }}</v-list-item-title>
-          </template>
-          <v-list-item
-            @click="fetchData(item.params)"
-            link
-            v-for="item in section.kinds"
-            :key="item.unit"
-          >
-            <v-list-item-title class="pl-4">{{ item.unit }}</v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-    </v-navigation-drawer> -->
   </nav>
 </template>
 

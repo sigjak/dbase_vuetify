@@ -11,6 +11,9 @@
             <h1 class="display-2 pt-10 text-center grey--text">
               Institute of Earth Sciences
             </h1>
+            <h1 class="mt-2 display-1 text-center grey--text text--darken-1">
+              Databases
+            </h1>
           </v-col>
         </v-row>
 
@@ -141,8 +144,7 @@ export default {
 </script>
 <style lang="scss">
 .v-dialog {
-  align-self: flex-end;
-  margin-bottom: 15vh;
+  margin-bottom: 200px;
 }
 .im {
   background-image: url('images/dawn.jpg');

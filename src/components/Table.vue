@@ -3,55 +3,6 @@
     <div v-if="updateModal">
       <update-modal />
     </div>
-
-    <!-- <v-dialog v-model="dialog" max-width="600">
-      <v-card>
-        <v-card-title class="headline">Update</v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="editedItem.fullName"
-                label="Name"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="editedItem.email"
-                label="Email"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="editedItem.account"
-                label="Account"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-menu>
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    :value="formattedDate"
-                    label="Date"
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  class="mt-12"
-                  no-title
-                  v-model="dagur"
-                ></v-date-picker>
-              </v-menu>
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn @click="dialog = !dialog">Close</v-btn>
-          <v-btn color="primary lighten-1" @click="save()">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog> -->
     <v-row justify="end">
       <v-col cols="6">
         <v-text-field
@@ -142,24 +93,12 @@ export default {
   },
   data() {
     return {
-      //updDialog: true,
       options: {},
       postdata: {
         ids: [],
         tablename: '',
         data: [],
       },
-      //dagur: null,
-      // editedItem: {
-      //   fullName: '',
-      //   email: '',
-      //   id: '',
-      //   account: '',
-      //   date: '',
-      //   supervisor: '',
-      //   tablename: ''
-      // },
-      //editedIndex: -1,
       dialog: false,
       search: '',
       singleSelect: false,
@@ -238,14 +177,12 @@ export default {
         type: 'info',
         onBeforeOpen: () => {
           this.$swal.showLoading()
-          // console.log(this.$store.state.confirmCheck)
           this.confirm(this.selected).then(() => {
             this.selected = []
             this.$swal.disableLoading()
             if (this.$store.state.confirmCheck === true) {
               this.showOk()
             }
-            // console.log('after show')
           })
         },
       })
@@ -349,20 +286,6 @@ export default {
         Filename,
         Columns,
       }
-      // return {
-      //   Sheetname: this.params.currentUnit,
-      //   Filename:
-      //     this.params.currentUnit + '_' + new Date().toLocaleDateString(),
-      //   Columns: [
-      //     { label: 'Name', field: 'fullName' },
-      //     { label: 'Date', field: 'date' },
-      //     { label: 'Status', field: 'status' },
-      //     { label: 'Email', field: 'email' },
-      //     { label: 'Account', field: 'account' },
-      //     { label: 'Supervisor', field: 'supervisor' },
-      //     { label: 'Comments', field: 'comments' }
-      //   ]
-      // }
     },
   },
   watch: {
@@ -371,22 +294,6 @@ export default {
       this.options = { page: 1, itemsPerPage: 10 }
     },
     mtTable: 'empty',
-  },
-  created() {
-    // console.log('CREATEDD')
-    // if (this.table) {
-    //   localStorage.setItem('storedTable', this.table)
-    //   localStorage.setItem('storedUnit', this.unit)
-    //   this.currentTable = this.table
-    //   this.currentUnit = this.unit
-    // } else {
-    //   this.currentTable = localStorage.getItem('storedTable')
-    //   this.currentUnit = localStorage.getItem('storedUnit')
-    // }
-    // console.log('hi')
-    // let payload = { tablename: this.currentTable, years: this.yearsToGet }
-    // // this.getData(this.currentTable, this.yearsToGet)
-    // this.fetchData(payload)
   },
 }
 </script>
