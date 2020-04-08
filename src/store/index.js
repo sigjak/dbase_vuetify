@@ -12,11 +12,11 @@ let base = axios.create({
         'Cache-Control': 'no-cache',
     },
 })
-// if (process.env.NODE_ENV === 'development') {
-//     base = axios.create({
-//         baseURL: 'http://localhost/vuetiAPI',
-//     })
-// }
+if (process.env.NODE_ENV === 'development') {
+    base = axios.create({
+        baseURL: 'http://localhost/vuetiAPI',
+    })
+}
 
 export default new Vuex.Store({
     state: {
