@@ -1,5 +1,5 @@
-<template>
-  <v-app>
+<template
+  ><v-app>
     <v-content>
       <div v-if="!loggedIn">
         <v-img
@@ -20,13 +20,6 @@
         <v-row>
           <v-col cols="12">
             <div class="dd">
-              <!-- <v-dialog
-                class="mt-4"
-                hide-overlay=""
-                v-model="loginDialog"
-                persistent
-                width="400px"
-              > -->
               <v-card width="400">
                 <v-card-title>IES DATABASE</v-card-title>
 
@@ -59,7 +52,6 @@
                   </v-form>
                 </v-card-text>
               </v-card>
-              <!-- </v-dialog> -->
             </div>
           </v-col>
         </v-row>
@@ -154,12 +146,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-//   position: fixed;
-//   left: 36%;
-//   top: 45%;
-//   z-index: 10;
-//   width: 400px;
-// }
+
 .im {
   background-image: url('images/dawn.jpg');
   background-size: cover;
