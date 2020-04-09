@@ -116,8 +116,36 @@ export default {
         submitting() {
             if (this.users.includes(this.login.name)) {
                 this.loggedIn = true
-
                 this.loginDialog = false
+
+                switch (this.login.name) {
+                    case 'aka':
+                        this.params = this.$store.state.paramsVidi
+                        break
+                    case 'halli':
+                        this.params = this.$store.state.paramsVidi
+                        break
+                    case 'iris':
+                        this.params = this.$store.state.paramsVidi
+                        break
+                    case 'irisd':
+                        this.params = this.$store.state.paramsVidi
+                        break
+                    case 'steinij':
+                        this.params = this.$store.state.paramsBlue
+                        break
+                    case 'svst':
+                        this.params = this.$store.state.paramsHelluhr
+                        break
+                    case 'rebekka':
+                        this.params = this.$store.state.paramsThin
+                        break
+                    case 'glumur':
+                        this.params = this.$store.state.paramsOes
+                        break
+                }
+
+                this.fetchData(this.params)
             } else {
                 this.logErr()
             }
@@ -134,7 +162,6 @@ export default {
     },
     created() {
         this.fetchUsers()
-        this.fetchData(this.params)
     },
 }
 </script>
