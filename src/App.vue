@@ -114,19 +114,13 @@ export default {
     methods: {
         ...mapActions(['fetchData', 'fetchUsers']),
         submitting() {
-            // this.fetchUsers().then(() => {
-            //   let tt = this.$store.state.users
-            //  // console.log(tt)
-            // })
             if (this.users.includes(this.login.name)) {
                 this.loggedIn = true
 
-                //console.log(this.users)
                 this.loginDialog = false
             } else {
                 this.logErr()
             }
-            // this.fetchData(this.params)
         },
         logErr() {
             this.$swal({

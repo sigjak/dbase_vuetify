@@ -91,9 +91,6 @@ export default new Vuex.Store({
             let payload = Object.assign({}, item)
             commit('UPDATE_ITEM', payload)
         },
-        // close({ commit }) {
-        //   commit('CLOSE')
-        // }
     },
     mutations: {
         CONFIRM_VEHICLE: (state, Ids) => {
