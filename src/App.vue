@@ -120,14 +120,9 @@ export default {
 
                 switch (this.login.name) {
                     case 'aka':
-                        this.params = this.$store.state.paramsVidi
-                        break
                     case 'halli':
-                        this.params = this.$store.state.paramsVidi
-                        break
                     case 'iris':
-                        this.params = this.$store.state.paramsVidi
-                        break
+                    // fall throughs
                     case 'irisd':
                         this.params = this.$store.state.paramsVidi
                         break

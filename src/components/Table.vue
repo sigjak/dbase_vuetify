@@ -23,14 +23,16 @@
                     <v-card-subtitle>{{ params.title }} </v-card-subtitle>
                     <v-data-table
                         v-model="selected"
+                        must-sort
                         :headers="headers"
                         :items="tableData"
                         :single-select="singleSelect"
                         :custom-sort="customSort"
                         item-key="id"
+                        sort-by="date"
+                        update:sort-desc
                         calculate-widths
                         show-select
-                        :options.sync="options"
                         :search="search"
                         class="elevation-1"
                     >
@@ -101,7 +103,6 @@ export default {
     },
     data() {
         return {
-            options: {},
             postdata: {
                 ids: [],
                 tablename: '',
