@@ -21,6 +21,10 @@
                         >{{ params.currentUnit }}
                     </v-card-title>
                     <v-card-subtitle>{{ params.title }} </v-card-subtitle>
+                    <p class="overline font-weight-light text-center">
+                        Click on header-arrows to sort ascending, to sort
+                        descending or to unsort.
+                    </p>
                     <v-data-table
                         v-model="selected"
                         :headers="headers"
