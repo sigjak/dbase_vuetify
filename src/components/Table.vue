@@ -22,7 +22,7 @@
                     </v-card-title>
                     <v-card-subtitle>{{ params.title }} </v-card-subtitle>
                     <p class="overline font-weight-light text-center">
-                        Click on header-arrows to sort ascending, to sort
+                        Click on column headers to sort ascending, to sort
                         descending or to unsort.
                     </p>
                     <v-data-table
@@ -32,8 +32,6 @@
                         :single-select="singleSelect"
                         :custom-sort="customSort"
                         item-key="id"
-                        sort-by="date"
-                        update:sort-desc
                         calculate-widths
                         :options.sync="options"
                         show-select
