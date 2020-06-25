@@ -271,7 +271,11 @@ export default {
                 h1.splice(2, 0, h2)
                 return h1.slice(0)
             } else if (this.params.index == 'vehicle') {
-                const h2 = { text: 'Status', value: 'status', width: '100' }
+                const h2 = {
+                    text: 'Confirmed',
+                    value: 'status',
+                    width: '120',
+                }
                 h1.splice(2, 0, h2)
                 return h1.slice(0)
             } else if (this.params.index == 'thin') {

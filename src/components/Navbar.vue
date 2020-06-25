@@ -283,6 +283,16 @@ export default {
                             },
                         },
                         {
+                            unit: 'Grey Hilux ',
+                            params: {
+                                currentTable: 'grey_hilux',
+                                years: true,
+                                currentUnit: 'Grey Hilux ',
+                                title: 'Last Two Years',
+                                index: 'vehicle',
+                            },
+                        },
+                        {
                             unit: 'Open trailer ',
                             params: {
                                 currentTable: 'opentrailer',
