@@ -38,12 +38,13 @@
                         :search="search"
                         class="elevation-1"
                     >
-                        /* eslint-disable-next-line*/
+                        <!-- eslint-disable-next-line -->
                         <template #item.comments="{ item }">
                             <div class="overfl">
                                 {{ item.comments }}
                             </div>
                         </template>
+                        <!-- eslint-disable-next-line -->
                         <template #item.action="{ item }">
                             <v-icon class="mr-2 pt-2" @click="updateItem(item)">
                                 mdi-pencil
