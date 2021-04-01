@@ -263,6 +263,26 @@ export default {
                     name: 'Vehicles',
                     kinds: [
                         {
+                            unit: 'LandRover 35 ',
+                            params: {
+                                currentTable: 'landrover_35',
+                                years: true,
+                                currentUnit: 'LandRover 35 ',
+                                title: 'Last Two Years',
+                                index: 'vehicle',
+                            },
+                        },
+                        {
+                            unit: 'LandRover 38 ',
+                            params: {
+                                currentTable: 'landrover_38',
+                                years: true,
+                                currentUnit: 'LandRover 38 ',
+                                title: 'Last Two Years',
+                                index: 'vehicle',
+                            },
+                        },
+                        {
                             unit: 'Red Hilux ',
                             params: {
                                 currentTable: 'red_hilux',

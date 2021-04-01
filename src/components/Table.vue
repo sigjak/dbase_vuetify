@@ -38,6 +38,7 @@
                         :search="search"
                         class="elevation-1"
                     >
+                        /* eslint-disable-next-line*/
                         <template #item.comments="{ item }">
                             <div class="overfl">
                                 {{ item.comments }}
@@ -51,7 +52,6 @@
                                 mdi-trash-can
                             </v-icon>
                         </template>
-
                         <template v-if="selected.length > 0" #top>
                             <v-row>
                                 <v-btn
